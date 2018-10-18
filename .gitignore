@@ -1,8 +1,8 @@
-#忽略所有文�?
+#忽略所有文
 *
-# 不忽略目�?
+# 不忽略目
 !*/
-# 不忽略文�?gitignore�?.foo
+# 不忽略gitignore
 !.gitignore
 !*.sln
 !*.cs
