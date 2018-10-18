@@ -10,6 +10,7 @@
 !*.resx
 !*.json
 !*.config
+!*.settings
 !*.ico
 !*.png
 
