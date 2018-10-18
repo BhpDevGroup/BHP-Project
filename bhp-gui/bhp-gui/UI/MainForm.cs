@@ -82,7 +82,7 @@ namespace Bhp.UI
                     },
                     new ListViewItem.ListViewSubItem
                     {
-                        Name = "bhpgas"
+                        Name = "BHPGas"
                     }
                 }, -1, listView1.Groups[groupName])
                 {
@@ -299,7 +299,7 @@ namespace Bhp.UI
                                 Fixed8 bhp = balance_bhp.ContainsKey(script_hash) ? balance_bhp[script_hash] : Fixed8.Zero;
                                 Fixed8 gas = balance_gas.ContainsKey(script_hash) ? balance_gas[script_hash] : Fixed8.Zero;
                                 item.SubItems["BHP"].Text = bhp.ToString();
-                                item.SubItems["BhpGas"].Text = gas.ToString();
+                                item.SubItems["BHPGas"].Text = gas.ToString();
                             }
                             foreach (AssetState asset in listView2.Items.OfType<ListViewItem>().Select(p => p.Tag as AssetState).Where(p => p != null).ToArray())
                             {
@@ -318,7 +318,7 @@ namespace Bhp.UI
                                 else
                                 {
                                     string asset_name = asset.Asset.AssetType == AssetType.GoverningToken ? "BHP" :
-                                                        asset.Asset.AssetType == AssetType.UtilityToken ? "BhpGas" :
+                                                        asset.Asset.AssetType == AssetType.UtilityToken ? "BHPGas" :
                                                         asset.Asset.GetName();
                                     listView2.Items.Add(new ListViewItem(new[]
                                     {

@@ -244,7 +244,7 @@
     <value>194, 22</value>
   </data>
   <data name="提取BHPToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;BhpGas Claim...</value>
+    <value>&amp;BHPGas Claim...</value>
   </data>
   <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 6</value>
@@ -373,7 +373,7 @@
     <value>120</value>
   </data>
   <data name="columnHeader11.Text" xml:space="preserve">
-    <value>BhpGas</value>
+    <value>BHPGas</value>
   </data>
   <data name="columnHeader11.Width" type="System.Int32, mscorlib">
     <value>120</value>
