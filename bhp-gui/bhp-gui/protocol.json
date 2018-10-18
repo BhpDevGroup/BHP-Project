@@ -1,6 +1,6 @@
 ﻿{
   "ProtocolConfiguration": {
-    "Magic": 15835875,
+    "Magic": 58876898,
     "AddressVersion": 23,
     "SecondsPerBlock": 15,
     "StandbyValidators": [
@@ -10,10 +10,10 @@
       "0267e96868891c9f8b3394f45a4057327cf5c64ab317e6c844e052cf0add5c5c34"
     ],
     "SeedList": [
-      "seed1.test.bhpcash.io:10555",
-      "seed2.test.bhpcash.io:10555",
-      "seed3.test.bhpcash.io:10555",
-      "seed4.test.bhpcash.io:10555"
+      "seed01.bhpa.io:20555",
+      "seed02.bhpa.io:20555",
+      "seed03.bhpa.io:20555",
+      "seed04.bhpa.io:20555"
     ],
     "SystemFee": {
       "EnrollmentTransaction": 1000,

@@ -10,10 +10,10 @@
       "0267e96868891c9f8b3394f45a4057327cf5c64ab317e6c844e052cf0add5c5c34"
     ],
     "SeedList": [
-      "seed1.test.bhpcash.io:10557",
-      "seed2.test.bhpcash.io:10557",
-      "seed3.test.bhpcash.io:10557",
-      "seed4.test.bhpcash.io:10557"
+      "tseed01.bhpa.io:10555",
+      "tseed02.bhpa.io:10555",
+      "tseed03.bhpa.io:10555",
+      "tseed04.bhpa.io:10555"
     ],
     "SystemFee": {
       "EnrollmentTransaction": 1000,

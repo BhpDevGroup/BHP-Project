@@ -181,7 +181,7 @@ namespace Bhp.UI
             }
             修改密码CToolStripMenuItem.Enabled = Program.CurrentWallet is BRC6Wallet;
             交易TToolStripMenuItem.Enabled = Program.CurrentWallet != null;
-            提取BHPCCToolStripMenuItem.Enabled = Program.CurrentWallet != null;
+            提取BHPToolStripMenuItem.Enabled = Program.CurrentWallet != null;
             signDataToolStripMenuItem.Enabled = Program.CurrentWallet != null;
             requestCertificateToolStripMenuItem.Enabled = Program.CurrentWallet != null;
             注册资产RToolStripMenuItem.Enabled = Program.CurrentWallet != null;
@@ -291,12 +291,12 @@ namespace Bhp.UI
                                     Claim = bonus
                                 };
                             }
-                            var balance_bhpc = coins.Where(p => p.Output.AssetId.Equals(Blockchain.GoverningToken.Hash)).GroupBy(p => p.Output.ScriptHash).ToDictionary(p => p.Key, p => p.Sum(i => i.Output.Value));
+                            var balance_bhp = coins.Where(p => p.Output.AssetId.Equals(Blockchain.GoverningToken.Hash)).GroupBy(p => p.Output.ScriptHash).ToDictionary(p => p.Key, p => p.Sum(i => i.Output.Value));
                             var balance_gas = coins.Where(p => p.Output.AssetId.Equals(Blockchain.UtilityToken.Hash)).GroupBy(p => p.Output.ScriptHash).ToDictionary(p => p.Key, p => p.Sum(i => i.Output.Value));
                             foreach (ListViewItem item in listView1.Items)
                             {
                                 UInt160 script_hash = item.Name.ToScriptHash();
-                                Fixed8 bhp = balance_bhpc.ContainsKey(script_hash) ? balance_bhpc[script_hash] : Fixed8.Zero;
+                                Fixed8 bhp = balance_bhp.ContainsKey(script_hash) ? balance_bhp[script_hash] : Fixed8.Zero;
                                 Fixed8 gas = balance_gas.ContainsKey(script_hash) ? balance_gas[script_hash] : Fixed8.Zero;
                                 item.SubItems["BHP"].Text = bhp.ToString();
                                 item.SubItems["BhpGas"].Text = gas.ToString();
@@ -612,7 +612,7 @@ namespace Bhp.UI
             }
         }
 
-        private void 提取BHPCCToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 提取BHPToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Helper.Show<ClaimForm>();
         }
@@ -702,7 +702,7 @@ namespace Bhp.UI
 
         private void 官网WToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start("https://bhpcash.io/");
+            Process.Start("https://bhpa.io/");
         }
 
         private void 开发人员工具TToolStripMenuItem_Click(object sender, EventArgs e)
@@ -710,7 +710,7 @@ namespace Bhp.UI
             Helper.Show<DeveloperToolsForm>();
         }
 
-        private void 关于BHPCToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 关于BHPToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show($"{Strings.AboutMessage} {Strings.AboutVersion}{Assembly.GetExecutingAssembly().GetName().Version}", Strings.About);
         }

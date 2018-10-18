@@ -1,18 +1,21 @@
 ﻿{
   "ApplicationConfiguration": {
+    "AppConfigs": {
+      "Development": 1
+    },
     "Paths": {
       "Chain": "Chain_{0}",
       "Index": "Index_{0}",
       "CertCache": "Certs"
     },
     "P2P": {
-      "Port": 10333,
-      "WsPort": 10334
+      "Port": 20555,
+      "WsPort": 20556
     },
     "Urls": {
-      "AddressUrl": "https://explorer.bhpcash.io/address/{0}",
-      "AssetUrl": "https://explorer.bhpcash.io/api/main_net/v1/get_asset/{0}",
-      "TransactionUrl": "https://explorer.bhpcash.io/transaction/{0}"
+      "AddressUrl": "https://exp.bhpa.io/address?addr={0}",
+      "AssetUrl": "https://exp.bhpa.io/asset?id={0}",
+      "TransactionUrl": "https://exp.bhpa.io/transaction?txhash={0}"
     }
   }
 }

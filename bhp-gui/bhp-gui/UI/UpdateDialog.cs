@@ -56,7 +56,7 @@ namespace Bhp.UI
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://bhpcash.io/");
+            Process.Start("https://bhpa.io/");
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

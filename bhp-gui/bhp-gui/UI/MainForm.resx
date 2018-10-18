@@ -237,13 +237,13 @@
   <data name="签名SToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Signature...</value>
   </data>
-  <data name="提取BHPCCToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
+  <data name="提取BHPToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="提取BHPCCToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="提取BHPToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 22</value>
   </data>
-  <data name="提取BHPCCToolStripMenuItem.Text" xml:space="preserve">
+  <data name="提取BHPToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;BhpGas Claim...</value>
   </data>
   <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
@@ -354,11 +354,11 @@
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 6</value>
   </data>
-  <data name="关于BHPCToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="关于BHPToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 22</value>
   </data>
-  <data name="关于BHPCToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;About Bhp</value>
+  <data name="关于BHPToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;About BHP</value>
   </data>
   <data name="columnHeader1.Text" xml:space="preserve">
     <value>Address</value>
@@ -1422,10 +1422,10 @@
   <data name="&gt;&gt;高级AToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;提取BHPCCToolStripMenuItem.Name" xml:space="preserve">
-    <value>提取BHPCCToolStripMenuItem</value>
+  <data name="&gt;&gt;提取BHPToolStripMenuItem.Name" xml:space="preserve">
+    <value>提取BHPToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;提取BHPCCToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;提取BHPToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator7.Name" xml:space="preserve">
@@ -1536,10 +1536,10 @@
   <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;关于BHPCToolStripMenuItem.Name" xml:space="preserve">
-    <value>关于BHPCToolStripMenuItem</value>
+  <data name="&gt;&gt;关于BHPToolStripMenuItem.Name" xml:space="preserve">
+    <value>关于BHPToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;关于BHPCToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;关于BHPToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
