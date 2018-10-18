@@ -45,7 +45,7 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.签名SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.高级AToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.提取BHPCCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.提取BHPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.requestCertificateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.注册资产RToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +64,7 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.开发人员工具TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.关于BHPCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.关于BHPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -225,7 +225,7 @@
             // 高级AToolStripMenuItem
             // 
             this.高级AToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.提取BHPCCToolStripMenuItem,
+            this.提取BHPToolStripMenuItem,
             this.toolStripSeparator7,
             this.requestCertificateToolStripMenuItem,
             this.注册资产RToolStripMenuItem,
@@ -243,9 +243,9 @@
             // 
             // 提取BHPCCToolStripMenuItem
             // 
-            resources.ApplyResources(this.提取BHPCCToolStripMenuItem, "提取BHPCCToolStripMenuItem");
-            this.提取BHPCCToolStripMenuItem.Name = "提取BHPCCToolStripMenuItem";
-            this.提取BHPCCToolStripMenuItem.Click += new System.EventHandler(this.提取BHPCCToolStripMenuItem_Click);
+            resources.ApplyResources(this.提取BHPToolStripMenuItem, "提取BHPToolStripMenuItem");
+            this.提取BHPToolStripMenuItem.Name = "提取BHPToolStripMenuItem";
+            this.提取BHPToolStripMenuItem.Click += new System.EventHandler(this.提取BHPToolStripMenuItem_Click);
             // 
             // toolStripSeparator7
             // 
@@ -323,7 +323,7 @@
             this.toolStripSeparator3,
             this.开发人员工具TToolStripMenuItem,
             this.toolStripSeparator4,
-            this.关于BHPCToolStripMenuItem});
+            this.关于BHPToolStripMenuItem});
             this.帮助HToolStripMenuItem.Name = "帮助HToolStripMenuItem";
             resources.ApplyResources(this.帮助HToolStripMenuItem, "帮助HToolStripMenuItem");
             // 
@@ -354,11 +354,11 @@
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
             // 
-            // 关于BHPCToolStripMenuItem
+            // 关于BHPToolStripMenuItem
             // 
-            this.关于BHPCToolStripMenuItem.Name = "关于BHPCToolStripMenuItem";
-            resources.ApplyResources(this.关于BHPCToolStripMenuItem, "关于BHPCToolStripMenuItem");
-            this.关于BHPCToolStripMenuItem.Click += new System.EventHandler(this.关于BHPCToolStripMenuItem_Click);
+            this.关于BHPToolStripMenuItem.Name = "关于BHPToolStripMenuItem";
+            resources.ApplyResources(this.关于BHPToolStripMenuItem, "关于BHPToolStripMenuItem");
+            this.关于BHPToolStripMenuItem.Click += new System.EventHandler(this.关于BHPToolStripMenuItem_Click);
             // 
             // listView1
             // 
@@ -760,7 +760,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem 开发人员工具TToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem 关于BHPCToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 关于BHPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 交易TToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 签名SToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
@@ -795,7 +795,7 @@
         private System.Windows.Forms.ToolStripMenuItem importWIFToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importCertificateToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripMenuItem 提取BHPCCToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 提取BHPToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem 选举EToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 重建钱包数据库RToolStripMenuItem;

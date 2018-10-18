@@ -46,7 +46,7 @@ namespace Bhp
             XDocument xdoc = null;
             try
             {
-                xdoc = XDocument.Load("https://bhpcash.io/client/update.xml");
+                xdoc = XDocument.Load("https://bhpa.io/client/update.xml");
             }
             catch { }
             if (xdoc != null)

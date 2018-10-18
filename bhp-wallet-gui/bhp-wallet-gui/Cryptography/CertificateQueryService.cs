@@ -69,7 +69,7 @@ namespace Bhp.Cryptography
             }
             else
             {
-                string url = $"http://cert.bhpcash.io/bhpc/{address}.cer";
+                string url = $"http://cert.bhpa.io/bhp/{address}.cer";
                 WebClient web = new WebClient();
                 web.DownloadDataCompleted += Web_DownloadDataCompleted;
                 web.DownloadDataAsync(new Uri(url), hash);

@@ -187,10 +187,10 @@
   <data name="交易TToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Transacción</value>
   </data>
-  <data name="提取BHPCCToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="提取BHPToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>186, 22</value>
   </data>
-  <data name="提取BHPCCToolStripMenuItem.Text" xml:space="preserve">
+  <data name="提取BHPToolStripMenuItem.Text" xml:space="preserve">
     <value>Reclamar &amp;BhpGas...</value>
   </data>
   <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
@@ -277,10 +277,10 @@
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
     <value>233, 6</value>
   </data>
-  <data name="关于BHPCToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="关于BHPToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>236, 22</value>
   </data>
-  <data name="关于BHPCToolStripMenuItem.Text" xml:space="preserve">
+  <data name="关于BHPToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Acerca de Bhp</value>
   </data>
   <data name="帮助HToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
