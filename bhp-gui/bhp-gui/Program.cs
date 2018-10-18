@@ -41,12 +41,14 @@ namespace Bhp
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            
             XDocument xdoc = null;
-            try
+           /* try
             {
                 xdoc = XDocument.Load("https://bhpa.io/client/update.xml");
             }
             catch { }
+            */
             if (xdoc != null)
             {
                 Version version = Assembly.GetExecutingAssembly().GetName().Version;

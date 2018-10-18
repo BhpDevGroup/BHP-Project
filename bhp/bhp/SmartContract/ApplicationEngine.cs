@@ -507,30 +507,30 @@ namespace Bhp.SmartContract
             switch (api_name)
             {
                 case "System.Runtime.CheckWitness":
-                case "Bhp.Runtime.CheckWitness":                
+                case "Bhp.Runtime.CheckWitness":
                     return 200;
                 case "System.Blockchain.GetHeader":
-                case "Bhp.Blockchain.GetHeader":         
+                case "Bhp.Blockchain.GetHeader":
                     return 100;
                 case "System.Blockchain.GetBlock":
-                case "Bhp.Blockchain.GetBlock":                
+                case "Bhp.Blockchain.GetBlock":
                     return 200;
                 case "System.Blockchain.GetTransaction":
-                case "Bhp.Blockchain.GetTransaction":       
+                case "Bhp.Blockchain.GetTransaction":
                     return 100;
                 case "System.Blockchain.GetTransactionHeight":
                 case "Bhp.Blockchain.GetTransactionHeight":
                     return 100;
-                case "Bhp.Blockchain.GetAccount":          
+                case "Bhp.Blockchain.GetAccount":
                     return 100;
-                case "Bhp.Blockchain.GetValidators":           
+                case "Bhp.Blockchain.GetValidators":
                     return 200;
-                case "Bhp.Blockchain.GetAsset":           
+                case "Bhp.Blockchain.GetAsset":
                     return 100;
                 case "System.Blockchain.GetContract":
-                case "Bhp.Blockchain.GetContract":         
+                case "Bhp.Blockchain.GetContract":
                     return 100;
-                case "Bhp.Transaction.GetReferences":         
+                case "Bhp.Transaction.GetReferences":
                     return 200;
                 case "Bhp.Transaction.GetUnspentCoins":
                     return 200;
@@ -541,12 +541,12 @@ namespace Bhp.SmartContract
                     return 100;
                 case "Bhp.Account.IsStandard":
                     return 100;
-                case "Bhp.Asset.Create":          
+                case "Bhp.Asset.Create":
                     return 5000L * 100000000L / ratio;
-                case "Bhp.Asset.Renew":             
+                case "Bhp.Asset.Renew":
                     return (byte)CurrentContext.EvaluationStack.Peek(1).GetBigInteger() * 5000L * 100000000L / ratio;
                 case "Bhp.Contract.Create":
-                case "Bhp.Contract.Migrate":        
+                case "Bhp.Contract.Migrate":
                     long fee = 100L;
 
                     ContractPropertyState contract_properties = (ContractPropertyState)(byte)CurrentContext.EvaluationStack.Peek(3).GetBigInteger();
@@ -561,13 +561,14 @@ namespace Bhp.SmartContract
                     }
                     return fee * 100000000L / ratio;
                 case "System.Storage.Get":
-                case "Bhp.Storage.Get":             
+                case "Bhp.Storage.Get":
                     return 100;
                 case "System.Storage.Put":
-                case "Bhp.Storage.Put":       
+                case "System.Storage.PutEx":
+                case "Bhp.Storage.Put":
                     return ((CurrentContext.EvaluationStack.Peek(1).GetByteArray().Length + CurrentContext.EvaluationStack.Peek(2).GetByteArray().Length - 1) / 1024 + 1) * 1000;
                 case "System.Storage.Delete":
-                case "Bhp.Storage.Delete":           
+                case "Bhp.Storage.Delete":
                     return 100;
                 default:
                     return 1;
@@ -594,30 +595,36 @@ namespace Bhp.SmartContract
             return true;
         }
 
-        public static ApplicationEngine Run(byte[] script, IScriptContainer container = null, Block persisting_block = null, bool testMode = false)
+        public static ApplicationEngine Run(byte[] script, Snapshot snapshot,
+                    IScriptContainer container = null, Block persistingBlock = null, bool testMode = false, Fixed8 extraGAS = default(Fixed8))
+        {
+            snapshot.PersistingBlock = persistingBlock ?? snapshot.PersistingBlock ?? new Block
+            {
+                Version = 0,
+                PrevHash = snapshot.CurrentBlockHash,
+                MerkleRoot = new UInt256(),
+                Timestamp = snapshot.Blocks[snapshot.CurrentBlockHash].TrimmedBlock.Timestamp + Blockchain.SecondsPerBlock,
+                Index = snapshot.Height + 1,
+                ConsensusData = 0,
+                NextConsensus = snapshot.Blocks[snapshot.CurrentBlockHash].TrimmedBlock.NextConsensus,
+                Witness = new Witness
+                {
+                    InvocationScript = new byte[0],
+                    VerificationScript = new byte[0]
+                },
+                Transactions = new Transaction[0]
+            };
+            ApplicationEngine engine = new ApplicationEngine(TriggerType.Application, container, snapshot, extraGAS, testMode);
+            engine.LoadScript(script);
+            engine.Execute();
+            return engine;
+        }
+
+        public static ApplicationEngine Run(byte[] script, IScriptContainer container = null, Block persistingBlock = null, bool testMode = false, Fixed8 extraGAS = default(Fixed8))
         {
             using (Snapshot snapshot = Blockchain.Singleton.GetSnapshot())
             {
-                snapshot.PersistingBlock = persisting_block ?? new Block
-                {
-                    Version = 0,
-                    PrevHash = snapshot.CurrentBlockHash,
-                    MerkleRoot = new UInt256(),
-                    Timestamp = snapshot.Blocks[snapshot.CurrentBlockHash].TrimmedBlock.Timestamp + Blockchain.SecondsPerBlock,
-                    Index = snapshot.Height + 1,
-                    ConsensusData = 0,
-                    NextConsensus = snapshot.Blocks[snapshot.CurrentBlockHash].TrimmedBlock.NextConsensus,
-                    Witness = new Witness
-                    {
-                        InvocationScript = new byte[0],
-                        VerificationScript = new byte[0]
-                    },
-                    Transactions = new Transaction[0]
-                };
-                ApplicationEngine engine = new ApplicationEngine(TriggerType.Application, container, snapshot, Fixed8.Zero, testMode);
-                engine.LoadScript(script);
-                engine.Execute();
-                return engine;
+                return Run(script, snapshot, container, persistingBlock, testMode, extraGAS);
             }
         }
     }

@@ -38,14 +38,14 @@ namespace Bhp.UnitTests
         public void Size_Get()
         {
             uut.Value = TestUtils.GetByteArray(10, 0x42);
-            uut.Size.Should().Be(12); // 2 + 10
+            uut.Size.Should().Be(13); // 2 + 10 + 1
         }
 
         [TestMethod]
         public void Size_Get_Larger()
         {
             uut.Value = TestUtils.GetByteArray(88, 0x42);
-            uut.Size.Should().Be(90); // 2 + 88
+            uut.Size.Should().Be(91); // 2 + 88 + 1
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace Bhp.UnitTests
         [TestMethod]
         public void Deserialize()
         {
-            byte[] data = new byte[] { 0, 10, 66, 32, 32, 32, 32, 32, 32, 32, 32, 32 };
+            byte[] data = new byte[] { 0, 10, 66, 32, 32, 32, 32, 32, 32, 32, 32, 32, 0 };
             int index = 0;
             using (MemoryStream ms = new MemoryStream(data, index, data.Length - index, false))
             {
@@ -96,10 +96,10 @@ namespace Bhp.UnitTests
                     data = stream.ToArray();
                 }
             }
+                        
+            byte[] requiredData = new byte[] { 0, 10, 66, 32, 32, 32, 32, 32, 32, 32, 32, 32, 0 };
 
-            byte[] requiredData = new byte[] { 0, 10, 66, 32, 32, 32, 32, 32, 32, 32, 32, 32 };
-
-            data.Length.Should().Be(12);
+            data.Length.Should().Be(13);
             for (int i = 0; i < 12; i++)
             {
                 data[i].Should().Be(requiredData[i]);

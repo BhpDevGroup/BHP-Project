@@ -755,11 +755,11 @@ namespace Bhp.Shell
             uint wh = 0;
             if (Program.Wallet != null)
                 wh = (Program.Wallet.WalletHeight > 0) ? Program.Wallet.WalletHeight - 1 : 0;
-            Console.WriteLine("------------------RemoteNode List------------------");
+            Console.WriteLine("------------------------------RemoteNode List------------------------------");
             Console.WriteLine($"block: {wh}/{Blockchain.Singleton.Height}/{Blockchain.Singleton.HeaderHeight}  connected: {LocalNode.Singleton.ConnectedCount}  unconnected: {LocalNode.Singleton.UnconnectedCount}");
             foreach (RemoteNode node in LocalNode.Singleton.GetRemoteNodes().Take(Console.WindowHeight - 2))
                 Console.WriteLine($"  ip: {node.Remote.Address}\tport: {node.Remote.Port}\tlisten: {node.ListenerPort}\theight: {node.Version?.StartHeight}");
-            Console.WriteLine("---------------------------------------------------");
+            Console.WriteLine("---------------------------------------------------------------------------");
             return true;
         }
         /*
@@ -849,8 +849,9 @@ namespace Bhp.Shell
                 }
             }
             if (useRPC)
-            { 
-                system.StartRpc(IPAddress.Any,Settings.Default.RPC.Port,
+            {  
+                system.StartRpc(Settings.Default.RPC.BindAddress,
+                    Settings.Default.RPC.Port,
                     wallet: Program.Wallet,
                     sslCert: Settings.Default.RPC.SslCert,
                     password: Settings.Default.RPC.SslCertPassword);

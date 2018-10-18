@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Bhp.Network.P2P;
+using System.Net;
 
 namespace Bhp
 {
@@ -53,12 +54,14 @@ namespace Bhp
 
     internal class RPCSettings
     {
+        public IPAddress BindAddress { get; }
         public ushort Port { get; }
         public string SslCert { get; }
         public string SslCertPassword { get; }
 
         public RPCSettings(IConfigurationSection section)
         {
+            this.BindAddress = IPAddress.Parse(section.GetSection("BindAddress").Value);
             this.Port = ushort.Parse(section.GetSection("Port").Value);
             this.SslCert = section.GetSection("SslCert").Value;
             this.SslCertPassword = section.GetSection("SslCertPassword").Value;
