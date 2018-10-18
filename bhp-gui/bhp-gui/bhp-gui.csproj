@@ -292,11 +292,6 @@
     <Compile Include="Cryptography\CertificateQueryResultType.cs" />
     <Compile Include="Cryptography\CertificateQueryService.cs" />
     <Compile Include="IO\Actors\EventWrapper.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -543,7 +538,6 @@
     <Compile Include="UI\Wrappers\WitnessWrapper.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Strings.es-Es.resx">
