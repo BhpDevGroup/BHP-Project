@@ -81,16 +81,6 @@ namespace Bhp.Properties {
         }
         
         /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-        internal static byte[] OnchainCertificate {
-            get {
-                object obj = ResourceManager.GetObject("OnchainCertificate", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Bitmap remark {
