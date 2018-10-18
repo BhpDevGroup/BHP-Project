@@ -241,7 +241,7 @@
             this.高级AToolStripMenuItem.Name = "高级AToolStripMenuItem";
             resources.ApplyResources(this.高级AToolStripMenuItem, "高级AToolStripMenuItem");
             // 
-            // 提取BHPCCToolStripMenuItem
+            // 提取BHPToolStripMenuItem
             // 
             resources.ApplyResources(this.提取BHPToolStripMenuItem, "提取BHPToolStripMenuItem");
             this.提取BHPToolStripMenuItem.Name = "提取BHPToolStripMenuItem";
