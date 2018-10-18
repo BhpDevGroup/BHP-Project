@@ -292,13 +292,16 @@
     <Compile Include="Cryptography\CertificateQueryResultType.cs" />
     <Compile Include="Cryptography\CertificateQueryService.cs" />
     <Compile Include="IO\Actors\EventWrapper.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Properties\Settings.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Properties\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.cs">
-      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="UI\AssetRegisterDialog.cs">
       <SubType>Form</SubType>
@@ -425,11 +428,6 @@
     </Compile>
     <Compile Include="UI\PayToDialog.Designer.cs">
       <DependentUpon>PayToDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="UI\ContractDetailsDialog.cs">
       <SubType>Form</SubType>
@@ -892,10 +890,6 @@
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="protocol.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
