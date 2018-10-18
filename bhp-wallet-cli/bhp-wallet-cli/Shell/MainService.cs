@@ -659,7 +659,7 @@ namespace Bhp.Shell
             UIntBase assetId;
             switch (args[1].ToLower())
             {
-                case "bhpc":            
+                case "bhp":            
                     assetId = Blockchain.GoverningToken.Hash;
                     break;
                 case "bhpgas":               
@@ -805,7 +805,7 @@ namespace Bhp.Shell
                 UInt256 assetId;
                 switch (args[2].ToLower())
                 {
-                    case "bhpc":                   
+                    case "bhp":                   
                         assetId = Blockchain.GoverningToken.Hash;
                         break;
                     case "bhpgas": 

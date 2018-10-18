@@ -78,7 +78,7 @@ namespace Bhp.UI
                     },
                     new ListViewItem.ListViewSubItem
                     {
-                        Name = "BHPC"
+                        Name = "BHP"
                     },
                     new ListViewItem.ListViewSubItem
                     {
@@ -296,9 +296,9 @@ namespace Bhp.UI
                             foreach (ListViewItem item in listView1.Items)
                             {
                                 UInt160 script_hash = item.Name.ToScriptHash();
-                                Fixed8 bhpc = balance_bhpc.ContainsKey(script_hash) ? balance_bhpc[script_hash] : Fixed8.Zero;
+                                Fixed8 bhp = balance_bhpc.ContainsKey(script_hash) ? balance_bhpc[script_hash] : Fixed8.Zero;
                                 Fixed8 gas = balance_gas.ContainsKey(script_hash) ? balance_gas[script_hash] : Fixed8.Zero;
-                                item.SubItems["BHPC"].Text = bhpc.ToString();
+                                item.SubItems["BHP"].Text = bhp.ToString();
                                 item.SubItems["BhpGas"].Text = gas.ToString();
                             }
                             foreach (AssetState asset in listView2.Items.OfType<ListViewItem>().Select(p => p.Tag as AssetState).Where(p => p != null).ToArray())
@@ -317,7 +317,7 @@ namespace Bhp.UI
                                 }
                                 else
                                 {
-                                    string asset_name = asset.Asset.AssetType == AssetType.GoverningToken ? "BHPC" :
+                                    string asset_name = asset.Asset.AssetType == AssetType.GoverningToken ? "BHP" :
                                                         asset.Asset.AssetType == AssetType.UtilityToken ? "BhpGas" :
                                                         asset.Asset.GetName();
                                     listView2.Items.Add(new ListViewItem(new[]
@@ -727,8 +727,8 @@ namespace Bhp.UI
             voteToolStripMenuItem.Enabled =
                 listView1.SelectedIndices.Count == 1 &&
                 !((WalletAccount)listView1.SelectedItems[0].Tag).WatchOnly &&
-                !string.IsNullOrEmpty(listView1.SelectedItems[0].SubItems["BHPC"].Text) &&
-                decimal.Parse(listView1.SelectedItems[0].SubItems["BHPC"].Text) > 0;
+                !string.IsNullOrEmpty(listView1.SelectedItems[0].SubItems["BHP"].Text) &&
+                decimal.Parse(listView1.SelectedItems[0].SubItems["BHP"].Text) > 0;
             复制到剪贴板CToolStripMenuItem.Enabled = listView1.SelectedIndices.Count == 1;
             删除DToolStripMenuItem.Enabled = listView1.SelectedIndices.Count > 0;
         }

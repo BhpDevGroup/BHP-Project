@@ -121,7 +121,7 @@
     <value>关于</value>
   </data>
   <data name="AboutMessage" xml:space="preserve">
-    <value>BHPC</value>
+    <value>BHP</value>
   </data>
   <data name="AboutVersion" xml:space="preserve">
     <value>版本：</value>
@@ -178,7 +178,7 @@
     <value>安装证书</value>
   </data>
   <data name="InstallCertificateText" xml:space="preserve">
-    <value>BHPC需要安装证书才能对区块链上的资产进行认证，是否现在就安装证书？</value>
+    <value>BHP需要安装证书才能对区块链上的资产进行认证，是否现在就安装证书？</value>
   </data>
   <data name="InsufficientFunds" xml:space="preserve">
     <value>余额不足，无法创建交易。</value>

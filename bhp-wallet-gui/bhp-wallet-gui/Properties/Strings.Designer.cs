@@ -70,7 +70,7 @@ namespace Bhp.Properties {
         }
         
         /// <summary>
-        ///   查找类似 BHPC 的本地化字符串。
+        ///   查找类似 BHP 的本地化字符串。
         /// </summary>
         internal static string AboutMessage {
             get {
@@ -241,7 +241,7 @@ namespace Bhp.Properties {
         }
         
         /// <summary>
-        ///   查找类似 BHPC must install BHP root certificate to validate assets on the blockchain, install it now? 的本地化字符串。
+        ///   查找类似 BHP must install BHP root certificate to validate assets on the blockchain, install it now? 的本地化字符串。
         /// </summary>
         internal static string InstallCertificateText {
             get {
