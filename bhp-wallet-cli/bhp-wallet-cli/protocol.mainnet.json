@@ -1,0 +1,42 @@
+﻿{
+  "ProtocolConfiguration": {
+    "Magic": 8965178,
+    "AddressVersion": 23,
+    "SecondsPerBlock": 15,
+    "StandbyValidators": [
+      "02d36f8d245edff11758d25b2f0a972071547ef48379132266a13f241fc09e0bb0",
+      "02545eeecc7042db9e075d87abbf51401591055fba0eba9f07e69c900573cead1f",
+      "02c1c8f1786931471e3c3ed83ba0055848a5f1686c4c230eebf477c5c9ff71fa94",
+      "03bb6de812b221998feba7f5220eaae6474e30667fbeba8638ce8d80e4b80f9add",
+      "03cc373223ddd2d36170fb83101e1383b46c8b81d88a60792b5616e67aa6002a43",
+      "035b7ff7d074abda7ee8d819a09d9172c4315355cc258b487ebd89e0b8cf12d7a5",
+      "0365a62ef6a5f88e252f9de2270001b844a8f180e7733df5c2cd809af74c2934b4",
+      "02491f8e1ccebd3a851eff0b0a7fbf1889b243476d17bcd0c03e0f695c625b1e28",
+      "02026c7d8a0a173894802bbd110884a8b17aad19d8ee13dee6735dd410e45a9483",
+      "02a7c57f2d5e0621a3d71fa5f09f81d423fb46dd87e0845225cb78a1654e7824a7",
+      "021209724c36c0f00ad7183ae0a4ee5a0c80e951c5d3b5ae1bfcaad32c40cb7f30",
+      "0317570b33eeb49b60d56e187ab2b7b87e6207c2cca5585da2d8247f7bfea20aea",
+      "0389ff7d6e7a590ec6a32672f042cd5f9479fee9b365ba41b8b6f382af88e40a05",
+      "029cab9363ca929bbe1907f7d98ec93ee65ab66eb28ef12df4c9d389f84059a6ec",
+      "0284456e068cc8df0a47bf79dacce6fccab25893285ca8948ee1ec169c309a8bab",
+      "025ade66f6105742c8c4c1f7aa542c3c1dd8d9716668eaf992c43e2eed6195c319",
+      "02516c0cad98675360f84fa102aceac45047bbccaff801a12e860c4ce3f7071904",
+      "02914c02cbb0c917fba43636a364f59446e02ce1d0e56aaf82d660d6d5507a945e",
+      "02c505eb206b6df61bee11d0a432fcb91127e68a2e8285b5b6fe59bf5741e303bf",
+      "02b986978ed00b712546f90fe9fee5d979d6cac253345bd373fc586269eeed5158"
+    ],
+    "SeedList": [
+      "seed1.bhpcash.io:20455",
+      "seed2.bhpcash.io:20455",
+      "seed3.bhpcash.io:20455",
+      "seed4.bhpcash.io:20455",
+      "seed5.bhpcash.io:20455"
+    ],
+    "SystemFee": {
+      "EnrollmentTransaction": 1000,
+      "IssueTransaction": 500,
+      "PublishTransaction": 500,
+      "RegisterTransaction": 10000
+    }
+  }
+}

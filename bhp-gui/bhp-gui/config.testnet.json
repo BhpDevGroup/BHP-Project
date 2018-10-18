@@ -1,0 +1,18 @@
+﻿{
+  "ApplicationConfiguration": {
+    "Paths": {
+      "Chain": "Chain_{0}",
+      "Index": "Index_{0}",
+      "CertCache": "Certs"
+    },
+    "P2P": {
+      "Port": 20333,
+      "WsPort": 20334
+    },
+    "Urls": {
+      "AddressUrl": "https://explorer.test.bhpcash.io/address/{0}",
+      "AssetUrl": "https://explorer.test.bhpcash.io/api/test_net/v1/get_asset/{0}",
+      "TransactionUrl": "https://explorer.test.bhpcash.io/transaction/{0}"
+    }
+  }
+}

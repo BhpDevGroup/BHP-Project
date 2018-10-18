@@ -1,0 +1,25 @@
+﻿{
+  "ProtocolConfiguration": {
+    "Magic": 15835875,
+    "AddressVersion": 23,
+    "SecondsPerBlock": 15,
+    "StandbyValidators": [
+      "023a44d8f8a39b7bb1f75251b1def8c225c2e324ef74b20f0c9c09e84cd634f2fd",
+      "03c4711f5e76344bb94eec999722b818b5652855727576cc1174010d6531585a66",
+      "03be622fee242ee92c1908fbfadb593e172727334b4c1bd1579439ac3abefe4f2d",
+      "037eb889ae7c6aacf95241bd54d6e929a9315b0b9be80b56d6e4fcf4da98c84f8c"
+    ],
+    "SeedList": [
+      "seed1.test.bhpcash.io:10555",
+      "seed2.test.bhpcash.io:10555",
+      "seed3.test.bhpcash.io:10555",
+      "seed4.test.bhpcash.io:10555"
+    ],
+    "SystemFee": {
+      "EnrollmentTransaction": 1000,
+      "IssueTransaction": 500,
+      "PublishTransaction": 500,
+      "RegisterTransaction": 10000
+    }
+  }
+}
