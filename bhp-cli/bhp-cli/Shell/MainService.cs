@@ -603,6 +603,7 @@ namespace Bhp.Shell
             try
             {
                 Program.Wallet = OpenWallet(GetIndexer(), path, password);
+                system.ChanageWallet(Program.Wallet);
             }
             catch (CryptographicException)
             {

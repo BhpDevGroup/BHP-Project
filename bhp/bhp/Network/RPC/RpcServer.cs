@@ -32,7 +32,7 @@ namespace Bhp.Network.RPC
     public sealed class RpcServer : IDisposable
     {
         private readonly BhpSystem system;
-        private readonly Wallet wallet;
+        private Wallet wallet;
         private IWebHost host;
         private Fixed8 maxGasInvoke;
 
@@ -69,6 +69,15 @@ namespace Bhp.Network.RPC
                 host.Dispose();
                 host = null;
             }
+        }
+
+        public void SetWallet(Wallet wallet)
+        {
+            if (this.wallet != null)
+            {
+                this.wallet.Dispose();
+            }
+            this.wallet = wallet;
         }
 
         private JObject GetInvokeResult(byte[] script)

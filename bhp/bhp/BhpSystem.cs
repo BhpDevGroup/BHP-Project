@@ -62,5 +62,10 @@ namespace Bhp
             rpcServer = new RpcServer(this, wallet, maxGasInvoke);
             rpcServer.Start(bindAddress, port, sslCert, password, trustedAuthorities);
         }
+
+        public void ChanageWallet(Wallet wallet)
+        {
+            rpcServer.SetWallet(wallet);
+        }
     }
 }
