@@ -31,6 +31,9 @@ namespace Bhp.Ledger
         public static readonly uint SecondsPerBlock = Settings.Default.SecondsPerBlock;
         public const uint DecrementInterval = 2000000;
         public const uint MaxValidators = 1024;
+        public const uint AmountOfGoverningToken = 100000000;
+        public const uint AmountOfCreationGoverningToken = 40000000;
+        public const uint AmountOfMiningGoverningToken = AmountOfGoverningToken - AmountOfCreationGoverningToken;
         public static readonly uint[] GenerationAmount = { 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         public static readonly TimeSpan TimePerBlock = TimeSpan.FromSeconds(SecondsPerBlock);
         public static readonly ECPoint[] StandbyValidators = Settings.Default.StandbyValidators.OfType<string>().Select(p => ECPoint.DecodePoint(p.HexToBytes(), ECCurve.Secp256r1)).ToArray();
@@ -40,7 +43,7 @@ namespace Bhp.Ledger
         {
             AssetType = AssetType.GoverningToken,
             Name = "[{\"lang\":\"zh-CN\",\"name\":\"算力币\"},{\"lang\":\"en\",\"name\":\"BHP\"}]",
-            Amount = Fixed8.FromDecimal(100000000),
+            Amount = Fixed8.FromDecimal(AmountOfCreationGoverningToken),
             Precision = 8,
             Owner = ECCurve.Secp256r1.Infinity,
             Admin = (new[] { (byte)OpCode.PUSHT }).ToScriptHash(),
