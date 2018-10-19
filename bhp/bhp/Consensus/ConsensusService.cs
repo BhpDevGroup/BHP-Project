@@ -99,7 +99,7 @@ namespace Bhp.Consensus
                 system.LocalNode.Tell(new LocalNode.Relay { Inventory = block });
                 context.State |= ConsensusState.BlockSent;
             }
-        } 
+        }
 
         private void FillContext()
         {
@@ -108,17 +108,12 @@ namespace Bhp.Consensus
                 mem_pool = plugin.FilterForBlock(mem_pool);
             List<Transaction> transactions = mem_pool.ToList();
             Fixed8 amount_netfee = Block.CalculateNetFee(transactions);
-            /*
             TransactionOutput[] outputs = amount_netfee == Fixed8.Zero ? new TransactionOutput[0] : new[] { new TransactionOutput
             {
                 AssetId = Blockchain.UtilityToken.Hash,
                 Value = amount_netfee,
                 ScriptHash = wallet.GetChangeAddress()
             } };
-            */
-
-            TransactionOutput[] outputs = (new MiningTransactionOut()).MiningTransactionOuts(context.BlockIndex,wallet,amount_netfee);
-             
             while (true)
             {
                 ulong nonce = GetNonce();

@@ -61,12 +61,6 @@ namespace Bhp.SmartContract
             };
         }
 
-        /// <summary>
-        /// Create MultiSigRedeemScript
-        /// </summary>
-        /// <param name="m"></param>
-        /// <param name="publicKeys"></param>
-        /// <returns></returns>
         public static byte[] CreateMultiSigRedeemScript(int m, params ECPoint[] publicKeys)
         {
             if (!(1 <= m && m <= publicKeys.Length && publicKeys.Length <= 1024))
