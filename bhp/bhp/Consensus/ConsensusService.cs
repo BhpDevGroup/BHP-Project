@@ -101,6 +101,9 @@ namespace Bhp.Consensus
             }
         }
 
+        /// <summary>
+        /// 生成区块
+        /// </summary>
         private void FillContext()
         {
             IEnumerable<Transaction> mem_pool = Blockchain.Singleton.GetMemoryPool();
@@ -108,12 +111,31 @@ namespace Bhp.Consensus
                 mem_pool = plugin.FilterForBlock(mem_pool);
             List<Transaction> transactions = mem_pool.ToList();
             Fixed8 amount_netfee = Block.CalculateNetFee(transactions);
+            /*
             TransactionOutput[] outputs = amount_netfee == Fixed8.Zero ? new TransactionOutput[0] : new[] { new TransactionOutput
             {
                 AssetId = Blockchain.UtilityToken.Hash,
                 Value = amount_netfee,
                 ScriptHash = wallet.GetChangeAddress()
             } };
+            */
+            TransactionOutput[] outputs = null;
+            
+            if (context.BlockIndex < 10)
+            {
+                outputs = amount_netfee == Fixed8.Zero ? new TransactionOutput[0] : new[] {
+                    new TransactionOutput
+                    {
+                        AssetId = Blockchain.UtilityToken.Hash,
+                        Value = amount_netfee,
+                        ScriptHash = wallet.GetChangeAddress()
+                    }
+                };
+            }
+            else
+            {
+                outputs = (new MiningTransactionOut()).MiningTransactionOuts(context.BlockIndex, wallet, amount_netfee);
+            }
             while (true)
             {
                 ulong nonce = GetNonce();

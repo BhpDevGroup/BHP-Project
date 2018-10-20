@@ -16,6 +16,8 @@ namespace AkkaTest
             // Send a message to the actor
             greeter.Tell(new GreetingMessage());
 
+     
+
             Console.ReadLine();
         }
     }

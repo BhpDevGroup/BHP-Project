@@ -34,13 +34,17 @@ namespace Bhp.Ledger
         public static readonly uint[] GenerationAmount = { 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         public static readonly TimeSpan TimePerBlock = TimeSpan.FromSeconds(SecondsPerBlock);
         public static readonly ECPoint[] StandbyValidators = Settings.Default.StandbyValidators.OfType<string>().Select(p => ECPoint.DecodePoint(p.HexToBytes(), ECCurve.Secp256r1)).ToArray();
+        
+        public const uint AmountOfGoverningToken = 100000000;
+        public const uint AmountOfCreation = 40000000;
+        public const uint AmountOfMining = AmountOfGoverningToken - AmountOfCreation;
 
 #pragma warning disable CS0612
         public static readonly RegisterTransaction GoverningToken = new RegisterTransaction
         {
             AssetType = AssetType.GoverningToken,
             Name = "[{\"lang\":\"zh-CN\",\"name\":\"算力币\"},{\"lang\":\"en\",\"name\":\"BHP\"}]",
-            Amount = Fixed8.FromDecimal(100000000),
+            Amount = Fixed8.FromDecimal(AmountOfCreation),
             Precision = 8,
             Owner = ECCurve.Secp256r1.Infinity,
             Admin = (new[] { (byte)OpCode.PUSHT }).ToScriptHash(),
