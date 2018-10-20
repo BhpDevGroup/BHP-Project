@@ -119,9 +119,14 @@ namespace Bhp.Consensus
                 ScriptHash = wallet.GetChangeAddress()
             } };
             */
+
             TransactionOutput[] outputs = null;
             
-            if (context.BlockIndex < 10)
+            if (context.BlockIndex > 1)
+            {
+               outputs = (new MiningTransactionOut()).MiningTransactionOuts(context.BlockIndex, wallet, amount_netfee);
+            }
+            else
             {
                 outputs = amount_netfee == Fixed8.Zero ? new TransactionOutput[0] : new[] {
                     new TransactionOutput
@@ -132,10 +137,7 @@ namespace Bhp.Consensus
                     }
                 };
             }
-            else
-            {
-                outputs = (new MiningTransactionOut()).MiningTransactionOuts(context.BlockIndex, wallet, amount_netfee);
-            }
+
             while (true)
             {
                 ulong nonce = GetNonce();

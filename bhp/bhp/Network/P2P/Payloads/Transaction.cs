@@ -275,19 +275,24 @@ namespace Bhp.Network.P2P.Payloads
             TransactionResult[] results = GetTransactionResults()?.ToArray();
             if (results == null) return false;
             TransactionResult[] results_destroy = results.Where(p => p.Amount > Fixed8.Zero).ToArray();
-            //if (results_destroy.Length > 1) return false;  //MiningOutput          
-            //if (results_destroy.Length == 1 && results_destroy[0].AssetId != Blockchain.UtilityToken.Hash)
+            if (results_destroy.Length > 1) return false;
+            if (results_destroy.Length == 1 && results_destroy[0].AssetId != Blockchain.UtilityToken.Hash) return false;
+            /*
+            //MiningOutput  
             if (results_destroy.Length > 1)
             {
-                //Console.WriteLine($"*** results_destroy.Length > 1");
+                Console.WriteLine($"*** results_destroy.Length > 1");
                 return false;
             }
+          
             if (results_destroy.Length == 1 && results_destroy[0].AssetId != Blockchain.GoverningToken.Hash
                 && results_destroy[0].AssetId != Blockchain.UtilityToken.Hash)
             {
-                //Console.WriteLine($"*** results_destroy[0].AssetId");
+                Console.WriteLine($"*** results_destroy[0].AssetId");
                 return false;
             }
+            */
+
             if (SystemFee > Fixed8.Zero && (results_destroy.Length == 0 || results_destroy[0].Amount < SystemFee))
                 return false;
             TransactionResult[] results_issue = results.Where(p => p.Amount < Fixed8.Zero).ToArray();
@@ -295,10 +300,7 @@ namespace Bhp.Network.P2P.Payloads
             {
                 case TransactionType.MinerTransaction:
                     if (results_issue.Any(p => p.AssetId != Blockchain.GoverningToken.Hash && p.AssetId != Blockchain.UtilityToken.Hash))
-                    {
-                        //Console.WriteLine($"*** TransactionType.MinerTransaction");
-                        return false;
-                    }
+                        return false;                   
                     break;
                 //case TransactionType.MinerTransaction: //MiningOutput
                 case TransactionType.ClaimTransaction:
