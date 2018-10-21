@@ -266,6 +266,7 @@ namespace Bhp.Network.P2P.Payloads
             {
                 AssetState asset = snapshot.Assets.TryGet(group.Key);
                 if (asset == null) return false;
+                //40000
                 if (asset.Expiration <= snapshot.Height + 1 && asset.AssetType != AssetType.GoverningToken && asset.AssetType != AssetType.UtilityToken)
                     return false;
                 foreach (TransactionOutput output in group)
@@ -298,11 +299,12 @@ namespace Bhp.Network.P2P.Payloads
             TransactionResult[] results_issue = results.Where(p => p.Amount < Fixed8.Zero).ToArray();
             switch (Type)
             {
+                //MiningOutput
+                //case TransactionType.MinerTransaction:
+                //    if (results_issue.Any(p => p.AssetId != Blockchain.GoverningToken.Hash && p.AssetId != Blockchain.UtilityToken.Hash))
+                //        return false;                   
+                //    break;
                 case TransactionType.MinerTransaction:
-                    if (results_issue.Any(p => p.AssetId != Blockchain.GoverningToken.Hash && p.AssetId != Blockchain.UtilityToken.Hash))
-                        return false;                   
-                    break;
-                //case TransactionType.MinerTransaction: //MiningOutput
                 case TransactionType.ClaimTransaction:
                     if (results_issue.Any(p => p.AssetId != Blockchain.UtilityToken.Hash))
                         return false;

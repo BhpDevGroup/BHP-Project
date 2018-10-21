@@ -122,7 +122,7 @@ namespace Bhp.Consensus
 
             TransactionOutput[] outputs = null;
             
-            if (context.BlockIndex > 1)
+            if (context.BlockIndex > 0)
             {
                outputs = (new MiningTransactionOut()).MiningTransactionOuts(context.BlockIndex, wallet, amount_netfee);
             }
