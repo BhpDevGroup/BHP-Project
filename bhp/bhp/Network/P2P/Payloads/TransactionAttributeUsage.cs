@@ -9,7 +9,7 @@
 
         Script = 0x20,
 
-        Vote = 0x30,
+        Vote = 0x30, 
 
         DescriptionUrl = 0x81,
         Description = 0x90,

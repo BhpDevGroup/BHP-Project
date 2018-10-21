@@ -4,6 +4,7 @@ using Bhp.Cryptography;
 using Bhp.IO;
 using Bhp.IO.Actors;
 using Bhp.Ledger;
+using Bhp.Mining;
 using Bhp.Network.P2P;
 using Bhp.Network.P2P.Payloads;
 using Bhp.Persistence;
@@ -13,6 +14,7 @@ using Bhp.Wallets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+ 
 
 namespace Bhp.Consensus
 {
@@ -100,10 +102,7 @@ namespace Bhp.Consensus
                 context.State |= ConsensusState.BlockSent;
             }
         }
-
-        /// <summary>
-        /// 生成区块
-        /// </summary>
+        /*
         private void FillContext()
         {
             IEnumerable<Transaction> mem_pool = Blockchain.Singleton.GetMemoryPool();
@@ -111,33 +110,14 @@ namespace Bhp.Consensus
                 mem_pool = plugin.FilterForBlock(mem_pool);
             List<Transaction> transactions = mem_pool.ToList();
             Fixed8 amount_netfee = Block.CalculateNetFee(transactions);
-            /*
+             
             TransactionOutput[] outputs = amount_netfee == Fixed8.Zero ? new TransactionOutput[0] : new[] { new TransactionOutput
             {
                 AssetId = Blockchain.UtilityToken.Hash,
                 Value = amount_netfee,
                 ScriptHash = wallet.GetChangeAddress()
-            } };
-            */
-
-            TransactionOutput[] outputs = null;
-            
-            if (context.BlockIndex > 0)
-            {
-               outputs = (new MiningTransactionOut()).MiningTransactionOuts(context.BlockIndex, wallet, amount_netfee);
-            }
-            else
-            {
-                outputs = amount_netfee == Fixed8.Zero ? new TransactionOutput[0] : new[] {
-                    new TransactionOutput
-                    {
-                        AssetId = Blockchain.UtilityToken.Hash,
-                        Value = amount_netfee,
-                        ScriptHash = wallet.GetChangeAddress()
-                    }
-                };
-            }
-
+            } }; 
+ 
             while (true)
             {
                 ulong nonce = GetNonce();
@@ -149,6 +129,7 @@ namespace Bhp.Consensus
                     Outputs = outputs,
                     Witnesses = new Witness[0]
                 };
+
                 if (!context.Snapshot.ContainsTransaction(tx.Hash))
                 {
                     context.Nonce = nonce;
@@ -156,6 +137,37 @@ namespace Bhp.Consensus
                     break;
                 }
             }
+            context.TransactionHashes = transactions.Select(p => p.Hash).ToArray();
+            context.Transactions = transactions.ToDictionary(p => p.Hash);
+            context.NextConsensus = Blockchain.GetConsensusAddress(context.Snapshot.GetValidators(transactions).ToArray());
+        }
+        */
+
+        /// <summary>
+        /// 添加挖矿产出
+        /// </summary>
+        private void FillContext()
+        {
+            IEnumerable<Transaction> mem_pool = Blockchain.Singleton.GetMemoryPool();
+            foreach (IPolicyPlugin plugin in Plugin.Policies)
+                mem_pool = plugin.FilterForBlock(mem_pool);
+            List<Transaction> transactions = mem_pool.ToList();
+            Fixed8 amount_netfee = Block.CalculateNetFee(transactions);  
+
+            MiningTransaction miningTransaction = new MiningTransaction(amount_netfee);
+
+            while (true)
+            {
+                ulong nonce = GetNonce();
+                MinerTransaction tx = miningTransaction.GetMinerTransaction(nonce, context.BlockIndex, wallet);
+                if (!context.Snapshot.ContainsTransaction(tx.Hash))
+                {
+                    context.Nonce = nonce;
+                    transactions.Insert(0, tx);
+                    break;
+                }
+            }
+
             context.TransactionHashes = transactions.Select(p => p.Hash).ToArray();
             context.Transactions = transactions.ToDictionary(p => p.Hash);
             context.NextConsensus = Blockchain.GetConsensusAddress(context.Snapshot.GetValidators(transactions).ToArray());

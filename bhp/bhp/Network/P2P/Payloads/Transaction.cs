@@ -266,7 +266,7 @@ namespace Bhp.Network.P2P.Payloads
             {
                 AssetState asset = snapshot.Assets.TryGet(group.Key);
                 if (asset == null) return false;
-                //40000
+                //4000000
                 if (asset.Expiration <= snapshot.Height + 1 && asset.AssetType != AssetType.GoverningToken && asset.AssetType != AssetType.UtilityToken)
                     return false;
                 foreach (TransactionOutput output in group)
@@ -278,33 +278,17 @@ namespace Bhp.Network.P2P.Payloads
             TransactionResult[] results_destroy = results.Where(p => p.Amount > Fixed8.Zero).ToArray();
             if (results_destroy.Length > 1) return false;
             if (results_destroy.Length == 1 && results_destroy[0].AssetId != Blockchain.UtilityToken.Hash) return false;
-            /*
-            //MiningOutput  
-            if (results_destroy.Length > 1)
-            {
-                Console.WriteLine($"*** results_destroy.Length > 1");
-                return false;
-            }
-          
-            if (results_destroy.Length == 1 && results_destroy[0].AssetId != Blockchain.GoverningToken.Hash
-                && results_destroy[0].AssetId != Blockchain.UtilityToken.Hash)
-            {
-                Console.WriteLine($"*** results_destroy[0].AssetId");
-                return false;
-            }
-            */
-
             if (SystemFee > Fixed8.Zero && (results_destroy.Length == 0 || results_destroy[0].Amount < SystemFee))
                 return false;
             TransactionResult[] results_issue = results.Where(p => p.Amount < Fixed8.Zero).ToArray();
             switch (Type)
             {
                 //MiningOutput
-                //case TransactionType.MinerTransaction:
-                //    if (results_issue.Any(p => p.AssetId != Blockchain.GoverningToken.Hash && p.AssetId != Blockchain.UtilityToken.Hash))
-                //        return false;                   
-                //    break;
                 case TransactionType.MinerTransaction:
+                    if (results_issue.Any(p => p.AssetId != Blockchain.GoverningToken.Hash && p.AssetId != Blockchain.UtilityToken.Hash))
+                        return false;
+                    break;
+                //case TransactionType.MinerTransaction:
                 case TransactionType.ClaimTransaction:
                     if (results_issue.Any(p => p.AssetId != Blockchain.UtilityToken.Hash))
                         return false;

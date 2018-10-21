@@ -26,7 +26,7 @@ namespace Bhp.Services
                     Console.WriteLine(Assembly.GetEntryAssembly().GetName().Version);
                     return true;
                 default:
-                    Console.WriteLine("unknow command");
+                    Console.WriteLine($"error: command not found {args[0]}" );
                     return true;
             }
         }
