@@ -1,8 +1,10 @@
 using Bhp.Cryptography;
+using Bhp.Cryptography.ECC;
 using Bhp.IO;
 using Bhp.IO.Caching;
 using Bhp.IO.Json;
 using Bhp.Ledger;
+using Bhp.Mining;
 using Bhp.Persistence;
 using Bhp.SmartContract;
 using Bhp.VM;
@@ -10,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using System.Text;
 
 namespace Bhp.Network.P2P.Payloads
@@ -285,7 +288,7 @@ namespace Bhp.Network.P2P.Payloads
             {
                 //MiningOutput
                 case TransactionType.MinerTransaction:
-                    if (VerifyMinerTransaction() == false)
+                    if (VerifyMinerTransaction()== false) 
                         return false;
                     break;
                 //case TransactionType.MinerTransaction:
@@ -325,18 +328,39 @@ namespace Bhp.Network.P2P.Payloads
             if (Outputs.Any(p => p.AssetId != Blockchain.GoverningToken.Hash && p.AssetId != Blockchain.UtilityToken.Hash))
             {
                 return false;
+            } 
+
+            //There is only one governing asset in mining transactions.            
+            //if (Outputs.Select(p => p.AssetId == Blockchain.GoverningToken.Hash).Count() > 1)
+            //{
+            //    return false;
+            //}
+
+            //Outputs.Where(p => p.AssetId == Blockchain.GoverningToken.Hash);
+            foreach (TransactionOutput output in Outputs)
+            {
+                if (output.AssetId == Blockchain.GoverningToken.Hash && Attributes.Count() > 0)
+                {  
+                    MiningOutputLedger ledger = new MiningOutputLedger
+                    {
+                        AssetId = output.AssetId,
+                        Value = output.Value,
+                        ScriptHash = output.ScriptHash
+                    };
+
+                    foreach (ECPoint publicKey in Blockchain.StandbyValidators)
+                    {
+                        byte[] message = ledger.GetHashData();
+                        if(Crypto.Default.VerifySignature(message, Attributes[0].Data, publicKey.ToArray()))
+                        {
+                            Console.WriteLine($"MinerTransaction VerifySignature Success. Miner {publicKey.ToString()}");
+                            return true;
+                        }
+                    }
+                } 
             }
 
-                //There is only one governing asset in mining transactions.            
-                if (Outputs.Select(p => p.AssetId== Blockchain.GoverningToken.Hash).Count() > 1)
-            {
-                return false;
-            }
-            //The first transaction must be a mining transaction.
-            //if(Outputs[0].AssetId
-            //if (results_issue.Any(p => p.AssetId != Blockchain.GoverningToken.Hash && p.AssetId != Blockchain.UtilityToken.Hash))
-            //Outputs
-            return true;
+            return false;
         }
 
         private bool VerifyReceivingScripts()
