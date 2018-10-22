@@ -285,7 +285,7 @@ namespace Bhp.Network.P2P.Payloads
             {
                 //MiningOutput
                 case TransactionType.MinerTransaction:
-                    if (results_issue.Any(p => p.AssetId != Blockchain.GoverningToken.Hash && p.AssetId != Blockchain.UtilityToken.Hash))
+                    if (VerifyMinerTransaction() == false)
                         return false;
                     break;
                 //case TransactionType.MinerTransaction:
@@ -306,6 +306,37 @@ namespace Bhp.Network.P2P.Payloads
                 return false;
             if (!VerifyReceivingScripts()) return false;
             return this.VerifyWitnesses(snapshot);
+        }
+
+        /// <summary>
+        /// Verification of mining transactions
+        /// It can only be signed by consensus nodes.
+        /// </summary>
+        /// <returns></returns>
+        private bool VerifyMinerTransaction()
+        {
+            //No transaction output
+            if (Outputs.Count() < 1)
+            {
+                return true;
+            }
+
+            //
+            if (Outputs.Any(p => p.AssetId != Blockchain.GoverningToken.Hash && p.AssetId != Blockchain.UtilityToken.Hash))
+            {
+                return false;
+            }
+
+                //There is only one governing asset in mining transactions.            
+                if (Outputs.Select(p => p.AssetId== Blockchain.GoverningToken.Hash).Count() > 1)
+            {
+                return false;
+            }
+            //The first transaction must be a mining transaction.
+            //if(Outputs[0].AssetId
+            //if (results_issue.Any(p => p.AssetId != Blockchain.GoverningToken.Hash && p.AssetId != Blockchain.UtilityToken.Hash))
+            //Outputs
+            return true;
         }
 
         private bool VerifyReceivingScripts()
