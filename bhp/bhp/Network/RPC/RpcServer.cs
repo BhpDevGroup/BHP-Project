@@ -426,6 +426,7 @@ namespace Bhp.Network.RPC
                         if (fee < Fixed8.Zero)
                             throw new RpcException(-32602, "Invalid params");
                         UInt160 change_address = _params.Count >= 6 ? _params[5].AsString().ToScriptHash() : null;
+                        string remark = _params.Count >= 7 ? _params[6].AsString() : null;
                         Transaction tx = wallet.MakeTransaction(null, new[]
                         {
                             new TransferOutput
@@ -436,7 +437,8 @@ namespace Bhp.Network.RPC
                             }
                         }, from: from, change_address: change_address, fee: fee);
                         if (tx == null)
-                            throw new RpcException(-300, "Insufficient funds");
+                            throw new RpcException(-300, "Insufficient funds");                        
+                        AddRemak(remark, tx);
                         ContractParametersContext context = new ContractParametersContext(tx);
                         wallet.Sign(context);
                         if (context.Completed)
@@ -467,6 +469,7 @@ namespace Bhp.Network.RPC
                         if (fee < Fixed8.Zero)
                             throw new RpcException(-32602, "Invalid params");
                         UInt160 change_address = _params.Count >= 6 ? _params[5].AsString().ToScriptHash() : from;
+                        string remark = _params.Count >= 7 ? _params[6].AsString() : null;
                         Transaction tx = wallet.MakeTransaction(null, new[]
                         {
                             new TransferOutput
@@ -477,7 +480,8 @@ namespace Bhp.Network.RPC
                             }
                         }, from: from, change_address: change_address, fee: fee);
                         if (tx == null)
-                            throw new RpcException(-300, "Insufficient funds");
+                            throw new RpcException(-300, "Insufficient funds");                        
+                        AddRemak(remark, tx);
                         ContractParametersContext context = new ContractParametersContext(tx);
                         wallet.Sign(context);
                         if (context.Completed)
@@ -518,9 +522,11 @@ namespace Bhp.Network.RPC
                         if (fee < Fixed8.Zero)
                             throw new RpcException(-32602, "Invalid params");
                         UInt160 change_address = _params.Count >= 3 ? _params[2].AsString().ToScriptHash() : null;
+                        string remark = _params.Count >= 4 ? _params[3].AsString() : null;
                         Transaction tx = wallet.MakeTransaction(null, outputs, change_address: change_address, fee: fee);
                         if (tx == null)
-                            throw new RpcException(-300, "Insufficient funds");
+                            throw new RpcException(-300, "Insufficient funds");                        
+                        AddRemak(remark, tx);
                         ContractParametersContext context = new ContractParametersContext(tx);
                         wallet.Sign(context);
                         if (context.Completed)
@@ -556,6 +562,7 @@ namespace Bhp.Network.RPC
                         if (fee < Fixed8.Zero)
                             throw new RpcException(-32602, "Invalid params");
                         UInt160 change_address = _params.Count >= 5 ? _params[4].AsString().ToScriptHash() : null;
+                        string remark = _params.Count >= 6 ? _params[5].AsString() : null;
                         Transaction tx = wallet.MakeTransaction(null, new[]
                         {
                             new TransferOutput
@@ -567,6 +574,7 @@ namespace Bhp.Network.RPC
                         }, change_address: change_address, fee: fee);
                         if (tx == null)
                             throw new RpcException(-300, "Insufficient funds");
+                        AddRemak(remark, tx);
                         ContractParametersContext context = new ContractParametersContext(tx);
                         wallet.Sign(context);
                         if (context.Completed)
@@ -605,6 +613,20 @@ namespace Bhp.Network.RPC
                     }
                 default:
                     throw new RpcException(-32601, "Method not found");
+            }
+        }
+
+        private static void AddRemak(string remark, Transaction tx)
+        {
+            if (!string.IsNullOrEmpty(remark))
+            {
+                List<TransactionAttribute> attributes = new List<TransactionAttribute>();
+                attributes.Add(new TransactionAttribute
+                {
+                    Usage = TransactionAttributeUsage.Remark,
+                    Data = Encoding.UTF8.GetBytes(remark)
+                });
+                tx.Attributes = attributes.ToArray();
             }
         }
 

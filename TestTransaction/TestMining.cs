@@ -33,7 +33,7 @@ namespace TestTransaction
             Console.ReadKey();
             SignDelegate2 sign = new SignDelegate2(SignWithoutWallet);
 
-            var tx = CreateGlobalTransfer(sign);// CreateMinnerTransaction(sign);
+            var tx =  CreateMinnerTransaction(sign);
 
             system.LocalNode.Tell(new LocalNode.Relay { Inventory = tx });
                         

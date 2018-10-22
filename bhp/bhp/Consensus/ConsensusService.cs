@@ -102,6 +102,7 @@ namespace Bhp.Consensus
                 context.State |= ConsensusState.BlockSent;
             }
         }
+
         /*
         private void FillContext()
         {
