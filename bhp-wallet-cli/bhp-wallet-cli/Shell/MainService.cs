@@ -21,6 +21,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ECCurve = Bhp.Cryptography.ECC.ECCurve;
 using ECPoint = Bhp.Cryptography.ECC.ECPoint;
+using System.Text;
 
 namespace Bhp.Shell
 {
@@ -392,7 +393,7 @@ namespace Bhp.Shell
                 //"\timport key <wif|path>\n" +
                 "\texport key [address] [path]\n" +
                 //"\timport multisigaddress m pubkeys...\n" +
-                "\tsend <id|alias> <address> <value>|all [fee=0]\n" +
+                "\tsend <id|alias> <address> <value>|all [fee=0] [remark]\n" +
                 //"\tsign <jsonObjectToSign>\n" +
                 "Node Commands:\n" +
                 "\tshow state\n" +
@@ -640,7 +641,7 @@ namespace Bhp.Shell
 
         private bool OnSendCommand(string[] args)
         {
-            if (args.Length < 4 || args.Length > 5)
+            if (args.Length < 4 || args.Length > 6)
             {
                 Console.WriteLine("error");
                 return true;
@@ -700,6 +701,7 @@ namespace Bhp.Shell
                     return true;
                 }
                 Fixed8 fee = args.Length >= 5 ? Fixed8.Parse(args[4]) : Fixed8.Zero;
+                string remark = args.Length >= 6 ? args[5].ToString() : null;
                 tx = Program.Wallet.MakeTransaction(null, new[]
                 {
                     new TransferOutput
@@ -713,6 +715,16 @@ namespace Bhp.Shell
                 {
                     Console.WriteLine("Insufficient funds");
                     return true;
+                }
+                if (!string.IsNullOrEmpty(remark))
+                {
+                    List<TransactionAttribute> attributes = new List<TransactionAttribute>();
+                    attributes.Add(new TransactionAttribute
+                    {
+                        Usage = TransactionAttributeUsage.Remark,
+                        Data = Encoding.UTF8.GetBytes(remark)
+                    });
+                    tx.Attributes = attributes.ToArray();
                 }
             }
             ContractParametersContext context = new ContractParametersContext(tx);
