@@ -8,8 +8,8 @@ namespace TestTransaction
         {
             Console.WriteLine("Hello World!");
 
-            TestMining.Test(null);
-
+            //TestMining.Test(null);
+            TestAsset.Test();
 
             Console.ReadLine();
         }

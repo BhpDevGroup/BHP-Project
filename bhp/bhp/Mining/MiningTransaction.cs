@@ -29,7 +29,7 @@ namespace Bhp.Mining
         {
             if (outputs == null)
             {
-                GetTransactionOutputs(blockIndex, wallet, amount_netfee);
+                MakeTransactionOutputs(blockIndex, wallet, amount_netfee);
                 byte[] hashDataOfMining = GetHashData();
                 if (hashDataOfMining != null)
                 {
@@ -81,23 +81,23 @@ namespace Bhp.Mining
             return miningOutput == null ? null : miningOutput.GetHashData();
         }
 
-        private TransactionOutput[] GetTransactionOutputs(uint blockIndex, Wallet wallet, Fixed8 amount_netfee)
+        private TransactionOutput[] MakeTransactionOutputs(uint blockIndex, Wallet wallet, Fixed8 amount_netfee)
         {      
             if (amount_netfee == Fixed8.Zero)
             {
-                //网络费为0，只构造一笔挖矿交易
+                //If the network fee is 0, only a mining transaction will be constructed
                 outputs = new TransactionOutput[] { MiningOutput(blockIndex, wallet) };
             }
             else
             {
-                //先构造一笔挖矿交易，再构造一笔网络费用交易
+                //First, construct a mining transaction, then construct a network fee transaction
                 outputs = new TransactionOutput[] { MiningOutput(blockIndex, wallet), NetFeeOutput(wallet, amount_netfee) };
             }
             return outputs;
         }
 
         /// <summary>
-        /// 锚定比特币产出规则,区块产出按公式
+        /// Anchoring bitcoin output rules, block output according to output formula
         /// Blockchain.AmountOfMining
         /// </summary>
         /// <returns></returns>
