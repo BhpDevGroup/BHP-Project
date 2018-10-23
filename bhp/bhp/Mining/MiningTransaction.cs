@@ -38,9 +38,7 @@ namespace Bhp.Mining
                     if (account?.HasKey == true)
                     {
                         KeyPair key = account.GetKey();
-                        signatureOfMining = Crypto.Default.Sign(hashDataOfMining, key.PrivateKey, key.PublicKey.EncodePoint(false).Skip(1).ToArray());
-                        //signatureOfMining = Encoding.ASCII.GetBytes("fuckyou");
-                        Console.WriteLine("******签名成功******");
+                        signatureOfMining = Crypto.Default.Sign(hashDataOfMining, key.PrivateKey, key.PublicKey.EncodePoint(false).Skip(1).ToArray());                     
                     }
                 }
             }
