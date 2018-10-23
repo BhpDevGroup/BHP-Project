@@ -1,11 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Bhp.Plugins;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Reflection;
 
-namespace Bhp.Plugins
+namespace Neo.Plugins
 {
     internal class Settings
     {
+        public string RpcUser { get; }
+        public string RpcPass { get; }
         public string[] DisabledMethods { get; }
 
         public static Settings Default { get; }
@@ -17,6 +20,8 @@ namespace Bhp.Plugins
 
         public Settings(IConfigurationSection section)
         {
+            this.RpcUser = section.GetSection("RpcUser").Value;
+            this.RpcPass = section.GetSection("RpcPass").Value;
             this.DisabledMethods = section.GetSection("DisabledMethods").GetChildren().Select(p => p.Value).ToArray();
         }
     }
