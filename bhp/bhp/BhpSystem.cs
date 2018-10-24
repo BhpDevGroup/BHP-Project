@@ -65,7 +65,11 @@ namespace Bhp
 
         public void ChanageWallet(Wallet wallet)
         {
-            rpcServer?.SetWallet(wallet);
+            if (rpcServer == null)
+            {
+                rpcServer = new RpcServer(this, wallet);
+            }
+            rpcServer.SetWallet(wallet);
         }
     }
 }
