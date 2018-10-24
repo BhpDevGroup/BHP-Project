@@ -27,6 +27,18 @@ namespace Bhp.Mining
 
         public MinerTransaction GetMinerTransaction(ulong nonce, uint blockIndex, Wallet wallet)
         {
+            if (blockIndex < 2)
+            {
+                return new MinerTransaction
+                {
+                    Nonce = (uint)(nonce % (uint.MaxValue + 1ul)),
+                    Attributes = new TransactionAttribute[0],
+                    Inputs = new CoinReference[0],
+                    Outputs = amount_netfee == Fixed8.Zero ? new TransactionOutput[0] : new TransactionOutput[] { NetFeeOutput(wallet, amount_netfee) },
+                    Witnesses = new Witness[0]
+                };
+            }
+
             if (outputs == null)
             {
                 MakeTransactionOutputs(blockIndex, wallet, amount_netfee);
@@ -38,42 +50,28 @@ namespace Bhp.Mining
                     if (account?.HasKey == true)
                     {
                         KeyPair key = account.GetKey();
-                        signatureOfMining = Crypto.Default.Sign(hashDataOfMining, key.PrivateKey, key.PublicKey.EncodePoint(false).Skip(1).ToArray());                     
+                        signatureOfMining = Crypto.Default.Sign(hashDataOfMining, key.PrivateKey, key.PublicKey.EncodePoint(false).Skip(1).ToArray());
                     }
                 }
             }
 
-            if (blockIndex < 2)
+            MinerTransaction tx = new MinerTransaction
             {
-                return new MinerTransaction
-                {
-                    Nonce = (uint)(nonce % (uint.MaxValue + 1ul)),
-                    Attributes = new TransactionAttribute[0],
-                    Inputs = new CoinReference[0],
-                    Outputs = outputs,
-                    Witnesses = new Witness[0]
-                };
-            }
-            else
-            {
-                MinerTransaction tx = new MinerTransaction
-                {
-                    Nonce = (uint)(nonce % (uint.MaxValue + 1ul)),
-                    Attributes = signatureOfMining == null ? new TransactionAttribute[0] :
-                            new TransactionAttribute[]
-                            {
+                Nonce = (uint)(nonce % (uint.MaxValue + 1ul)),
+                Attributes = signatureOfMining == null ? new TransactionAttribute[0] :
+                        new TransactionAttribute[]
+                        {
                                 new TransactionAttribute
                                 {
                                     Usage = TransactionAttributeUsage.Description,
                                     Data = signatureOfMining
                                 }
-                            },
-                    Inputs = new CoinReference[0],
-                    Outputs = outputs,
-                    Witnesses = new Witness[0]
-                };
-                return tx;
-            }
+                        },
+                Inputs = new CoinReference[0],
+                Outputs = outputs,
+                Witnesses = new Witness[0]
+            };
+            return tx;
         }
          
         private byte[] GetHashData()
