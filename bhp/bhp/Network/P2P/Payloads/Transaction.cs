@@ -360,6 +360,7 @@ namespace Bhp.Network.P2P.Payloads
                 } 
             }
 
+            Console.WriteLine($"******MinerTransaction VerifySignature Fail.******");
             return false;
         }
 
