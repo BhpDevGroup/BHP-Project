@@ -114,7 +114,7 @@ namespace Bhp.Mining
             {
                 AssetId = Blockchain.GoverningToken.Hash,
                 Value = MiningAmountOfCurrentBlock(blockIndex),
-                ScriptHash = "AU7Zx7aUUiNiWX3mu3d3KagCtDhZEea8iZ".ToScriptHash() //wallet.GetChangeAddress()
+                ScriptHash = wallet.GetChangeAddress()
             };
 
             return new TransactionOutput
