@@ -36,7 +36,7 @@ namespace Bhp.Ledger
         public static readonly ECPoint[] StandbyValidators = Settings.Default.StandbyValidators.OfType<string>().Select(p => ECPoint.DecodePoint(p.HexToBytes(), ECCurve.Secp256r1)).ToArray();
         
         public const uint AmountOfGoverningToken = 100000000;//BHP 总量
-        public const uint AmountOfCreation = 40000000; //创世区块
+        public const uint AmountOfCreation = 45000000; //创世区块
         public const uint AmountOfMining = AmountOfGoverningToken - AmountOfCreation; //挖矿总量
 
 #pragma warning disable CS0612
