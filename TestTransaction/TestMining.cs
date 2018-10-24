@@ -23,27 +23,26 @@ namespace TestTransaction
     public class TestMining
     {
         static System.Timers.Timer timer = new System.Timers.Timer();
-        static string assetid = "0x64366593be92cd16471d5db9a4996cc19dd29147caf45794cf6ee42ae089b939";
+        //common
+        static string assetid = "0x13f76fabfe19f3ec7fd54d63179a156bafc44afc53a7f07a7a15f6724c0aa854";
         static string dbPath = @"D:\Projects\BHP-Project\TestTransaction\bin\Debug\netcoreapp2.1\db";
-
-        static string currentScript = "2102cfce51880b622d41a28ff04ed06c0e0ba9cc8a33627b948af436fe01f4943f7bac";
-        static string currentHexPri = "c72915340453c40a3c47f3522785b49d2d61f9dfdd53f0376ed2f524bd462716";
-        static string currentAddress = "AQ7WcGjsdJoF95PvPy6RHZj9P9Wz9TZifk";
-        
-        static string preTxId = "0xb57c7b968ef80396cb611f225504a50ae606645155c9870943d828247e325ef3";
-        static string tansferAddress = "AQ7WcGjsdJoF95PvPy6RHZj9P9Wz9TZifk";
-        //Ad44qaLgbADLbiHTjVBTntkfCNXQfKm6aw        0xa5fd834425bc0c7ab8e7ce7d9c5bac1e5e38b39f631280f9a7bcfeac64b2ddf4 1
-        //AYuyQLezvjZTpKPLEtQTLLdPGJQh3g8ZP6        0xa5fd834425bc0c7ab8e7ce7d9c5bac1e5e38b39f631280f9a7bcfeac64b2ddf4 0
+        static string currentScript = "210225a59524cf0c06ed23698eb57bba24fdb22781cb4db18728e28aab69c28611aeac";
+        static string currentHexPri = "6a57c00d95e88fe9dc2bf94e09db2470c1cd4e4a2698cb19d7461721d1c6bcfd";
+        //MinnerTransaction
+        static string currentAddress = "AMaHHa7ay9rH9ipLAXCHr7PaUqp2Rxn6rf";
+        //GlobalTransfer
+        static string preTxId = "0x13190bbae2b091124549b7fd5cd715a05be6b3b1f707923248b78879e3e564e3";
+        static string tansferAddress = "AQ4CyKoGL5rc6tmvNifmXKtLtb9mDWg4Tc";        
         static Fixed8 tansferValue = Fixed8.FromDecimal(10);
         static ushort prevIndex = 0;
 
-        public static void Test(string[] args)
+        public static void Test()
         {
             timer.Interval = 5000;
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
             var system = new BhpSystem(new LevelDBStore(dbPath));
-            system.StartNode(10555, 10556);
+            system.StartNode(10555, 11556);
 
             Console.WriteLine("block height : " + Blockchain.Singleton.Height);
             Console.WriteLine("Please input any key...");
