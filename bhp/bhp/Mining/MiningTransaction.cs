@@ -23,7 +23,7 @@ namespace Bhp.Mining
 
         public MinerTransaction GetMinerTransaction(ulong nonce, uint blockIndex, Wallet wallet)
         {
-            if (blockIndex < 2)
+            if (blockIndex < 1)
             {
                 return new MinerTransaction
                 {

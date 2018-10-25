@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Bhp.IO.Json;
+﻿using Bhp.IO.Json;
 using Bhp.Network.RPC;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using System.Text;
-using Bhp.Plugins;
 
-namespace Neo.Plugins
+namespace Bhp.Plugins
 {
     public class RpcSecurity : Plugin, IRpcPlugin
     {

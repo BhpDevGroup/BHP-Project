@@ -1,20 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>2.9.0</Version>
+    <Version>1.0.0</Version>
     <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
-    <RootNamespace>Neo.Plugins</RootNamespace>
+    <RootNamespace>Bhp.Plugins</RootNamespace>
+    <PackageId>RpcSecurity</PackageId>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\bhp-vm\src\bhp-vm\bhp-vm.csproj" />
+    <ProjectReference Include="..\..\bhp\bhp\bhp.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="RpcSecurity\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\bhp\bhp\bhp.csproj" />
   </ItemGroup>
 
 </Project>

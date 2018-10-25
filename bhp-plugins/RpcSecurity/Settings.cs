@@ -1,9 +1,8 @@
-﻿using Bhp.Plugins;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Reflection;
 
-namespace Neo.Plugins
+namespace Bhp.Plugins
 {
     internal class Settings
     {
