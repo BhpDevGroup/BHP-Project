@@ -12,20 +12,17 @@ namespace TestTransaction
     /// 
     /// </summary>
     public class TestAsset
-    { 
-
-        
-
+    {  
         public static void Test()
         {
             DateTime bhpCreationTime = DateTime.UtcNow;
             FileStream fs = new FileStream($"{System.Environment.CurrentDirectory}\\BHP_Output.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs);
-            sw.WriteLine($"Start {DateTime.Now}");
+            sw.WriteLine($"Start {DateTime.Now.ToLocalTime()}");
             sw.Flush();
 
             uint blockIndex = 0;
-            MiningSubsidy miningSubsidy = new MiningSubsidy();
+         
             Console.WriteLine(bhpCreationTime);
             string line = "";
             Fixed8 lastSubsidy = Fixed8.Zero;
@@ -33,7 +30,7 @@ namespace TestTransaction
             Fixed8 lastTotal = Fixed8.Zero;
             while (true)
             {
-                Fixed8 nSubsidy = miningSubsidy.GetMiningSubsidy(blockIndex);
+                Fixed8 nSubsidy = MiningSubsidy.GetMiningSubsidy(blockIndex);
                 if (nSubsidy == Fixed8.Zero)
                 {
                     break;
@@ -61,15 +58,12 @@ namespace TestTransaction
             }
             Console.WriteLine(blockIndex);
 
-            sw.WriteLine($"The End {DateTime.Now}");
+            sw.WriteLine($"The End {DateTime.Now.ToLocalTime()}");
             sw.Flush();
 
             //关闭流
             sw.Close();
             fs.Close();
-        }
-
-
- 
+        }  
     }
 }

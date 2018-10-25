@@ -93,16 +93,7 @@ namespace Bhp.Mining
             }
             return outputs;
         }
-
-        /// <summary>
-        /// Anchoring bitcoin output rules, block output according to output formula
-        /// Blockchain.AmountOfMining
-        /// </summary>
-        /// <returns></returns>
-        private Fixed8 MiningAmountOfCurrentBlock(uint blockIndex)
-        {
-            return Fixed8.FromDecimal((blockIndex % 10) == 0 ? 10 : 5);
-        }
+         
 
         /// <summary>
         /// 挖矿产出
@@ -113,8 +104,8 @@ namespace Bhp.Mining
             miningOutput = new MiningOutputLedger
             {
                 AssetId = Blockchain.GoverningToken.Hash,
-                Value = MiningAmountOfCurrentBlock(blockIndex),
-                ScriptHash = wallet.GetChangeAddress()
+                Value = MiningSubsidy.GetMiningSubsidy(blockIndex),
+                ScriptHash = MiningParams.PoSAddress.Length > 0 ? MiningParams.PoSAddress[blockIndex % (uint)MiningParams.PoSAddress.Length].ToScriptHash() : wallet.GetChangeAddress()
             };
 
             return new TransactionOutput

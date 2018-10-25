@@ -140,6 +140,11 @@ namespace Bhp.Network.RPC
             }
         }
 
+        public void OpenWallet(Wallet wallet)
+        {
+            this.wallet = wallet;
+        }
+
         private JObject Process(string method, JArray _params)
         {
             switch (method)

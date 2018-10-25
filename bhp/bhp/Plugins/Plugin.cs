@@ -19,6 +19,8 @@ namespace Bhp.Plugins
 
         protected virtual bool OnMessage(object message) => false;
 
+        public static bool ShowLog = true;
+
         protected Plugin()
         {
             Plugins.Add(this);

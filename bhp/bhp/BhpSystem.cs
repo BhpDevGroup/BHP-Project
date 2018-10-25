@@ -13,18 +13,18 @@ namespace Bhp
 {
     public class BhpSystem : IDisposable
     {
-        public readonly ActorSystem ActorSystem = ActorSystem.Create(nameof(BhpSystem),
+        public ActorSystem ActorSystem = ActorSystem.Create(nameof(BhpSystem),
             $"akka {{ log-dead-letters = off }}" +
             $"blockchain-mailbox {{ mailbox-type: \"{typeof(BlockchainMailbox).AssemblyQualifiedName}\" }}" +
             $"task-manager-mailbox {{ mailbox-type: \"{typeof(TaskManagerMailbox).AssemblyQualifiedName}\" }}" +
             $"remote-node-mailbox {{ mailbox-type: \"{typeof(RemoteNodeMailbox).AssemblyQualifiedName}\" }}" +
             $"protocol-handler-mailbox {{ mailbox-type: \"{typeof(ProtocolHandlerMailbox).AssemblyQualifiedName}\" }}" +
             $"consensus-service-mailbox {{ mailbox-type: \"{typeof(ConsensusServiceMailbox).AssemblyQualifiedName}\" }}");
-        public readonly IActorRef Blockchain;
-        public readonly IActorRef LocalNode;
-        internal readonly IActorRef TaskManager;
-        internal IActorRef Consensus;
-        private RpcServer rpcServer;
+        public IActorRef Blockchain;
+        public IActorRef LocalNode;
+        internal IActorRef TaskManager;
+        public IActorRef Consensus;
+        public RpcServer RpcServer;
 
         public BhpSystem(Store store)
         {
@@ -36,7 +36,7 @@ namespace Bhp
 
         public void Dispose()
         {
-            rpcServer?.Dispose();
+            RpcServer?.Dispose();
             ActorSystem.Stop(LocalNode);
             ActorSystem.Dispose();
         }
@@ -59,17 +59,8 @@ namespace Bhp
         public void StartRpc(IPAddress bindAddress, int port, Wallet wallet = null, string sslCert = null, string password = null,
            string[] trustedAuthorities = null, Fixed8 maxGasInvoke = default(Fixed8))
         {
-            rpcServer = new RpcServer(this, wallet, maxGasInvoke);
-            rpcServer.Start(bindAddress, port, sslCert, password, trustedAuthorities);
-        }
-
-        public void ChanageWallet(Wallet wallet)
-        {
-            if (rpcServer == null)
-            {
-                rpcServer = new RpcServer(this, wallet);
-            }
-            rpcServer.SetWallet(wallet);
-        }
+            RpcServer = new RpcServer(this, wallet, maxGasInvoke);
+            RpcServer.Start(bindAddress, port, sslCert, password, trustedAuthorities);
+        } 
     }
 }

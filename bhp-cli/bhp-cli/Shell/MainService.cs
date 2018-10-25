@@ -85,6 +85,8 @@ namespace Bhp.Shell
                     return OnStartCommand(args);
                 case "upgrade":
                     return OnUpgradeCommand(args);
+                case "log":
+                    return OnLogCommand(args);
                 default:
                     return base.OnCommand(args);
             }
@@ -388,12 +390,14 @@ namespace Bhp.Shell
                 "\tsend <id|alias> <address> <value>|all [fee=0] [remark]\n" +
                 "\tsign <jsonObjectToSign>\n" +
                 "Node Commands:\n" +
-                "\tshow state\n" +
-                "\tshow node\n" +
+                "\tshow state\n" +            
                 "\tshow pool [verbose]\n" +
                 "\trelay <jsonObjectToSign>\n" +
                 "Advanced Commands:\n" +
-                "\tstart consensus\n");
+                "\tstart consensus\n" +
+                "\tlog show\n" +
+                "\tlog hide\n" 
+                );
             return true;
         }
 
@@ -604,7 +608,7 @@ namespace Bhp.Shell
             try
             {
                 Program.Wallet = OpenWallet(GetIndexer(), path, password);
-                system.ChanageWallet(Program.Wallet);
+                system.RpcServer.OpenWallet(Program.Wallet);
             }
             catch (CryptographicException)
             {
@@ -941,6 +945,20 @@ namespace Bhp.Shell
             string path_new = Path.ChangeExtension(path, ".json");
             BRC6Wallet.Migrate(GetIndexer(), path_new, path, password).Save();
             Console.WriteLine($"Wallet file upgrade complete. New wallet file has been auto-saved at: {path_new}");
+            return true;
+        }
+
+        private bool OnLogCommand(String[] args)
+        {
+            switch (args[1].ToLower())
+            {
+                case "show":
+                    Plugin.ShowLog = true;
+                    return true;
+                case "hide":
+                    Plugin.ShowLog = false;
+                    return true;
+            }
             return true;
         }
 

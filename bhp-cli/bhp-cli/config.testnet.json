@@ -5,11 +5,11 @@
       "Index": "Index_{0}"
     },
     "P2P": {
-      "Port": 20333,
-      "WsPort": 20334
+      "Port": 20555,
+      "WsPort": 20556
     },
     "RPC": {
-      "Port": 20332,
+      "Port": 20557,
       "SslCert": "",
       "SslCertPassword": ""
     },

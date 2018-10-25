@@ -613,7 +613,7 @@ namespace Bhp.Shell
             try
             {
                 Program.Wallet = OpenWallet(GetIndexer(), path, password);
-                system.ChanageWallet(Program.Wallet);
+                system.RpcServer.OpenWallet(Program.Wallet);
             }
             catch (CryptographicException)
             {
