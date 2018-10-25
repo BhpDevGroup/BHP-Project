@@ -1,7 +1,10 @@
 ﻿using Bhp;
+using Bhp.Mining;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace TestTransaction
 {
@@ -9,40 +12,64 @@ namespace TestTransaction
     /// 
     /// </summary>
     public class TestAsset
-    {
-        /*
-        coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus());
-        CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
-        {
-            int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
-            // Force block reward to zero when right shift is undefined.
-            if (halvings >= 64)
-            return 0; 
-            
-            CAmount nSubsidy = 50 * COIN;
-            // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
-               nSubsidy >>= halvings;
-            return nSubsidy;
-        }*/
+    { 
 
-        private static DateTime btcCreationTime => DateTime.UtcNow;
+        
 
         public static void Test()
         {
-            Console.WriteLine(btcCreationTime);
-            Console.WriteLine(btcCreationTime);
+            DateTime bhpCreationTime = DateTime.UtcNow;
+            FileStream fs = new FileStream($"{System.Environment.CurrentDirectory}\\BHP_Output.txt", FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs);
+            sw.WriteLine($"Start {DateTime.Now}");
+            sw.Flush();
+
+            uint blockIndex = 0;
+            MiningSubsidy miningSubsidy = new MiningSubsidy();
+            Console.WriteLine(bhpCreationTime);
+            string line = "";
+            Fixed8 lastSubsidy = Fixed8.Zero;
+            Fixed8 totalSubsidy = Fixed8.Zero;
+            Fixed8 lastTotal = Fixed8.Zero;
+            while (true)
+            {
+                Fixed8 nSubsidy = miningSubsidy.GetMiningSubsidy(blockIndex);
+                if (nSubsidy == Fixed8.Zero)
+                {
+                    break;
+                }
+
+                totalSubsidy = totalSubsidy + nSubsidy;
+                lastTotal = lastTotal + nSubsidy;
+
+                line = string.Format("Height: {0},Time: {1},Subsidy:{2} BHP,Current:{3} BHP, Total:{4} BHP", blockIndex, bhpCreationTime.ToLocalTime(),
+                    nSubsidy, lastTotal, totalSubsidy);
+                Console.WriteLine(line);
+
+                if (lastSubsidy != nSubsidy)
+                {
+                    sw.WriteLine(line);
+                    sw.Flush();
+
+                    lastSubsidy = nSubsidy;
+                    lastTotal = Fixed8.Zero;
+                }
+
+                bhpCreationTime = bhpCreationTime.AddSeconds(15);
+                blockIndex++;
+
+            }
+            Console.WriteLine(blockIndex);
+
+            sw.WriteLine($"The End {DateTime.Now}");
+            sw.Flush();
+
+            //关闭流
+            sw.Close();
+            fs.Close();
         }
 
-        public static Fixed8 GetBlockSubsidy(uint blockIndex)
-        {            
-            uint halvings = blockIndex / ChainParams.SubsidyHalvingInterval;
-            // Force block reward to zero when right shift is undefined.
-            if (halvings >= 64)
-                return Fixed8.Zero;
 
-            Fixed8 subsidy = Fixed8.FromDecimal(50/40);
-            //subsidy >>= halvings;
-            return subsidy;
-        }
+ 
     }
 }
