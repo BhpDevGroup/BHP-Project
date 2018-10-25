@@ -1,6 +1,6 @@
 ﻿{
   "ProtocolConfiguration": {
-    "Magic": 58876898,
+    "Magic": 15835875,
     "AddressVersion": 23,
     "SecondsPerBlock": 15,
     "StandbyValidators": [
@@ -10,10 +10,10 @@
       "02cfce51880b622d41a28ff04ed06c0e0ba9cc8a33627b948af436fe01f4943f7b"
     ],
     "SeedList": [
-      "192.168.1.147:10555",
-      "192.168.1.147:20555",
-      "192.168.1.147:30555",
-      "192.168.1.147:40555"
+      "tseed1.bhpa.io:20555",
+      "tseed2.bhpa.io:20555",
+      "tseed3.bhpa.io:20555",
+      "tseed4.bhpa.io:20555"
     ],
     "SystemFee": {
       "EnrollmentTransaction": 1000,

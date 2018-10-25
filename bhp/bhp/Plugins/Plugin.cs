@@ -17,9 +17,7 @@ namespace Bhp.Plugins
         public virtual string Name => GetType().Name;
         public virtual Version Version => GetType().Assembly.GetName().Version;
 
-        protected virtual bool OnMessage(object message) => false;
-
-        public static bool ShowLog = true;
+        protected virtual bool OnMessage(object message) => false; 
 
         protected Plugin()
         {
@@ -59,7 +57,9 @@ namespace Bhp.Plugins
         public static void Log(string source, LogLevel level, string message)
         {
             foreach (ILogPlugin plugin in Loggers)
+            { 
                 plugin.Log(source, level, message);
+            }
         }
 
         public static bool SendMessage(object message)

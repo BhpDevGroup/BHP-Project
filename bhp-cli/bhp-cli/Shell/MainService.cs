@@ -394,9 +394,9 @@ namespace Bhp.Shell
                 "\tshow pool [verbose]\n" +
                 "\trelay <jsonObjectToSign>\n" +
                 "Advanced Commands:\n" +
-                "\tstart consensus\n" +
-                "\tlog show\n" +
-                "\tlog hide\n" 
+                "\tstart consensus\n" 
+                //"\tlog show\n" +
+                //"\tlog hide\n" 
                 );
             return true;
         }
@@ -608,7 +608,7 @@ namespace Bhp.Shell
             try
             {
                 Program.Wallet = OpenWallet(GetIndexer(), path, password);
-                system.RpcServer.OpenWallet(Program.Wallet);
+                system.OpenWallet(Program.Wallet);
             }
             catch (CryptographicException)
             {
@@ -867,18 +867,19 @@ namespace Bhp.Shell
             }
             if (useRPC)
             {
+
                 system.StartRpc(IPAddress.Any, Settings.Default.RPC.Port,
                     wallet: Program.Wallet,
                     sslCert: Settings.Default.RPC.SslCert,
                     password: Settings.Default.RPC.SslCertPassword);
-                //BindAddress
-                /*
-                system.StartRpc(Settings.Default.RPC.BindAddress,
-                    Settings.Default.RPC.Port,
-                    wallet: Program.Wallet,
-                    sslCert: Settings.Default.RPC.SslCert,
-                    password: Settings.Default.RPC.SslCertPassword);
-                    */
+
+
+                //BindAddress               
+                //system.StartRpc(Settings.Default.RPC.BindAddress,
+                //    Settings.Default.RPC.Port,
+                //    wallet: Program.Wallet,
+                //    sslCert: Settings.Default.RPC.SslCert,
+                //    password: Settings.Default.RPC.SslCertPassword); 
             }
         }
 
@@ -949,14 +950,14 @@ namespace Bhp.Shell
         }
 
         private bool OnLogCommand(String[] args)
-        {
+        {            
             switch (args[1].ToLower())
             {
-                case "show":
-                    Plugin.ShowLog = true;
+                case "show": 
+                    Console.WriteLine("Log message is opened.");
                     return true;
-                case "hide":
-                    Plugin.ShowLog = false;
+                case "hide": 
+                    Console.WriteLine("Log message is hidden.");
                     return true;
             }
             return true;

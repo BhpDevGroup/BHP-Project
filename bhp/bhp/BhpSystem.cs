@@ -24,7 +24,7 @@ namespace Bhp
         public IActorRef LocalNode;
         internal IActorRef TaskManager;
         public IActorRef Consensus;
-        public RpcServer RpcServer;
+        private RpcServer rpcServer;
 
         public BhpSystem(Store store)
         {
@@ -36,7 +36,7 @@ namespace Bhp
 
         public void Dispose()
         {
-            RpcServer?.Dispose();
+            rpcServer?.Dispose();
             ActorSystem.Stop(LocalNode);
             ActorSystem.Dispose();
         }
@@ -59,8 +59,18 @@ namespace Bhp
         public void StartRpc(IPAddress bindAddress, int port, Wallet wallet = null, string sslCert = null, string password = null,
            string[] trustedAuthorities = null, Fixed8 maxGasInvoke = default(Fixed8))
         {
-            RpcServer = new RpcServer(this, wallet, maxGasInvoke);
-            RpcServer.Start(bindAddress, port, sslCert, password, trustedAuthorities);
-        } 
+            rpcServer = new RpcServer(this, wallet, maxGasInvoke);
+            rpcServer.Start(bindAddress, port, sslCert, password, trustedAuthorities);
+        }
+        
+        public void OpenWallet(Wallet wallet)
+        {
+            if (rpcServer == null)
+            {
+                rpcServer = new RpcServer(this, wallet, Fixed8.Zero); 
+            }
+            rpcServer.OpenWallet(wallet);
+        }
+
     }
 }

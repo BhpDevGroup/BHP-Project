@@ -1,19 +1,19 @@
 ﻿{
   "ProtocolConfiguration": {
-    "Magic": 58876898,
+    "Magic": 15835875,
     "AddressVersion": 23,
     "SecondsPerBlock": 15,
     "StandbyValidators": [
-      "02e3cb25f380ae0a7e5c7a7d2fdf9f2a01bdb97d71aaa8aff640531a899558f835",
-      "0268c25c3d6a8ecb510ec87bd89cf7b6987f676b2ffb10cde0fe0595e568bdff93",
-      "03831d4f20f014af1dc23d4af738b58f4e7476a4cef3d9a6870fdd257302fcb4d1",
-      "0267e96868891c9f8b3394f45a4057327cf5c64ab317e6c844e052cf0add5c5c34"
+      "0225a59524cf0c06ed23698eb57bba24fdb22781cb4db18728e28aab69c28611ae",
+      "02494568b2eec3d1a6662270e39fe6a526d496814c3c6273c289cab7b0cc850105",
+      "03ebcf1c1bdc3ef0c63eeee2c50f1819f4c4933111869931f7c4c1b39bb57a694c",
+      "02cfce51880b622d41a28ff04ed06c0e0ba9cc8a33627b948af436fe01f4943f7b"
     ],
     "SeedList": [
-      "seed01.bhpa.io:20555",
-      "seed02.bhpa.io:20555",
-      "seed03.bhpa.io:20555",
-      "seed04.bhpa.io:20555"
+      "tseed1.bhpa.io:20555",
+      "tseed2.bhpa.io:20555",
+      "tseed3.bhpa.io:20555",
+      "tseed4.bhpa.io:20555"
     ],
     "SystemFee": {
       "EnrollmentTransaction": 1000,

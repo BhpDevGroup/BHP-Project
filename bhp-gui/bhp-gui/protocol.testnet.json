@@ -1,28 +1,25 @@
 ﻿{
   "ProtocolConfiguration": {
-    "Magic": 1953787457,
+    "Magic": 15835875,
     "AddressVersion": 23,
+    "SecondsPerBlock": 15,
     "StandbyValidators": [
-      "0327da12b5c40200e9f65569476bbff2218da4f32548ff43b6387ec1416a231ee8",
-      "026ce35b29147ad09e4afe4ec4a7319095f08198fa8babbe3c56e970b143528d22",
-      "0209e7fd41dfb5c2f8dc72eb30358ac100ea8c72da18847befe06eade68cebfcb9",
-      "039dafd8571a641058ccc832c5e2111ea39b09c0bde36050914384f7a48bce9bf9",
-      "038dddc06ce687677a53d54f096d2591ba2302068cf123c1f2d75c2dddc5425579",
-      "02d02b1873a0863cd042cc717da31cea0d7cf9db32b74d4c72c01b0011503e2e22",
-      "034ff5ceeac41acf22cd5ed2da17a6df4dd8358fcb2bfb1a43208ad0feaab2746b"
+      "0225a59524cf0c06ed23698eb57bba24fdb22781cb4db18728e28aab69c28611ae",
+      "02494568b2eec3d1a6662270e39fe6a526d496814c3c6273c289cab7b0cc850105",
+      "03ebcf1c1bdc3ef0c63eeee2c50f1819f4c4933111869931f7c4c1b39bb57a694c",
+      "02cfce51880b622d41a28ff04ed06c0e0ba9cc8a33627b948af436fe01f4943f7b"
     ],
     "SeedList": [
-      "seed1.Bhp.org:20333",
-      "seed2.Bhp.org:20333",
-      "seed3.Bhp.org:20333",
-      "seed4.Bhp.org:20333",
-      "seed5.Bhp.org:20333"
+      "tseed1.bhpa.io:20555",
+      "tseed2.bhpa.io:20555",
+      "tseed3.bhpa.io:20555",
+      "tseed4.bhpa.io:20555"
     ],
     "SystemFee": {
-      "EnrollmentTransaction": 10,
-      "IssueTransaction": 5,
-      "PublishTransaction": 5,
-      "RegisterTransaction": 100
+      "EnrollmentTransaction": 1000,
+      "IssueTransaction": 500,
+      "PublishTransaction": 500,
+      "RegisterTransaction": 10000
     }
   }
 }

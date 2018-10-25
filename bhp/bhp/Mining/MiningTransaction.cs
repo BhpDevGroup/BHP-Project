@@ -1,12 +1,8 @@
-﻿using Bhp.Consensus;
-using Bhp.Cryptography;
+﻿using Bhp.Cryptography;
 using Bhp.Ledger;
 using Bhp.Network.P2P.Payloads;
 using Bhp.Wallets;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Bhp.Mining
 {
