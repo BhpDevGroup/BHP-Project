@@ -23,6 +23,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using Settings = Bhp.Properties.Settings;
@@ -192,6 +193,9 @@ namespace Bhp.UI
             创建新地址NToolStripMenuItem.Enabled = Program.CurrentWallet != null;
             导入私钥IToolStripMenuItem.Enabled = Program.CurrentWallet != null;
             创建智能合约SToolStripMenuItem.Enabled = Program.CurrentWallet != null;
+
+            toolStripMenuItem3.Enabled = Program.CurrentWallet != null;
+
             listView1.Items.Clear();
             if (Program.CurrentWallet != null)
             {
@@ -766,6 +770,57 @@ namespace Bhp.UI
             }
         }
 
+        private bool CreateNewWallet()
+        {
+            using (CreateWalletDialog dialog = new CreateWalletDialog())
+            {
+                if (dialog.ShowDialog() != DialogResult.OK) return false;
+                BRC6Wallet wallet = new BRC6Wallet(GetIndexer(), dialog.WalletPath);
+                wallet.Unlock(dialog.Password);
+                //wallet.CreateAccount();
+                wallet.Save();
+                ChangeWallet(wallet);
+                Settings.Default.LastWalletPath = dialog.WalletPath;
+                Settings.Default.Save();
+                return true;
+            }
+        }
+
+        private void ImportWIFs()
+        {
+            using (ImportPrivateKeyDialog dialog = new ImportPrivateKeyDialog())
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "txt|*.txt";
+                if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+                listView1.SelectedIndices.Clear();
+
+                if (Program.CurrentWallet == null && CreateNewWallet() == false)
+                {
+                    return;
+                }
+
+                StreamReader sr = new StreamReader(openFileDialog.FileName, Encoding.ASCII);
+                String line;
+                while ((line = sr.ReadLine()) != null)
+                { 
+                    WalletAccount account;
+                    try
+                    {
+                        account = Program.CurrentWallet.Import(line);
+                    }
+                    catch (FormatException)
+                    {
+                        continue;
+                    }
+                    AddAccount(account, true);
+                    Application.DoEvents();
+                }
+                if (Program.CurrentWallet is BRC6Wallet wallet)
+                    wallet.Save();
+            }
+        }
+
         private void importCertificateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (SelectCertificateDialog dialog = new SelectCertificateDialog())
@@ -1010,6 +1065,54 @@ namespace Bhp.UI
             //交易TToolStripMenuItem.Visible = Settings.Default.AppConfig.Development;
             高级AToolStripMenuItem.Visible = Settings.Default.AppConfig.Development;
             开发人员工具TToolStripMenuItem.Visible = Settings.Default.AppConfig.Development;
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            ImportWIFs();
+        }
+
+        /// <summary>
+        /// 导出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            if (Program.CurrentWallet == null) return;
+
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = "Please select WIF save directory";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string wifFile = string.Format($"{dialog.SelectedPath}\\wifs.txt");
+                string walletFile = string.Format($"{dialog.SelectedPath}\\wallets.txt");
+
+                FileStream fsWif = new FileStream(wifFile, FileMode.Create);
+                StreamWriter swWif = new StreamWriter(fsWif);
+
+                FileStream fsWallet = new FileStream(walletFile, FileMode.Create);
+                StreamWriter swWallet = new StreamWriter(fsWallet);
+
+                foreach (WalletAccount account in Program.CurrentWallet.GetAccounts())
+                {
+                    KeyPair key = account.GetKey();
+                    string wifLine = $"{key.Export()}";
+                    string walletLine = $"{account.Address}\t{key.PublicKey.EncodePoint(true).ToHexString()}\t{key.PrivateKey.ToHexString()}\t{key.Export()}";
+
+                    swWif.WriteLine(wifLine);
+                    swWif.Flush();
+                    swWallet.WriteLine(walletLine);
+                    swWallet.Flush(); 
+                }
+
+                swWif.Close();
+                fsWif.Close();
+                swWallet.Close();
+                fsWallet.Close();
+
+                MessageBox.Show("导出钱包信息成功.", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

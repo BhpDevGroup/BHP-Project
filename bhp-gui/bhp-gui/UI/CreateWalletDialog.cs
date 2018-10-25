@@ -52,6 +52,7 @@ namespace Bhp.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
+            saveFileDialog1.Filter = "Wallet File| *.json";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 textBox1.Text = saveFileDialog1.FileName;
