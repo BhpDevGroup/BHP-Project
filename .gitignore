@@ -15,6 +15,10 @@
 !*.png
 !*.bat
 
+!*.cpp
+!*.h
+!*.hpp
+
 bin/
 /bin
 obj/
