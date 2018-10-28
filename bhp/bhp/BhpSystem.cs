@@ -69,7 +69,7 @@ namespace Bhp
             {
                 rpcServer = new RpcServer(this, wallet, Fixed8.Zero); 
             }
-            rpcServer.OpenWallet(wallet);
+            rpcServer.SetWallet(wallet);
         }
 
     }

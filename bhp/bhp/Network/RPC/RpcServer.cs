@@ -138,12 +138,7 @@ namespace Bhp.Network.RPC
                 default:
                     throw new RpcException(-500, "Unkown error.");
             }
-        }
-
-        public void OpenWallet(Wallet wallet)
-        {
-            this.wallet = wallet;
-        }
+        } 
 
         private JObject Process(string method, JArray _params)
         {
