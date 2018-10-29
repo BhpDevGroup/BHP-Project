@@ -450,6 +450,9 @@ namespace Bhp.Ledger
                     {
                         Items = Enumerable.Repeat(CoinState.Confirmed, tx.Outputs.Length).ToArray()
                     });
+                    //add UnspentCoinsOfAddress
+                    //snapshot.UnspentCoinsOfAddress.Add(tx.Outputs)
+
                     foreach (TransactionOutput output in tx.Outputs)
                     {
                         AccountState account = snapshot.Accounts.GetAndChange(output.ScriptHash, () => new AccountState(output.ScriptHash));

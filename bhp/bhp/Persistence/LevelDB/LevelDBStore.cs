@@ -80,6 +80,11 @@ namespace Bhp.Persistence.LevelDB
             return new DbCache<UInt256, UnspentCoinState>(db, null, null, Prefixes.ST_Coin);
         }
 
+        public override DataCache<UInt160, UnspentCoinState> GetUnspentCoinsOfAddress()
+        {
+            return new DbCache<UInt160, UnspentCoinState>(db, null, null, Prefixes.ST_Coin);
+        }
+
         public override DataCache<ECPoint, ValidatorState> GetValidators()
         {
             return new DbCache<ECPoint, ValidatorState>(db, null, null, Prefixes.ST_Validator);

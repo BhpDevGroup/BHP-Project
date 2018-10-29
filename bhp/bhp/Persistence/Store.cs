@@ -11,6 +11,7 @@ namespace Bhp.Persistence
         DataCache<UInt256, TransactionState> IPersistence.Transactions => GetTransactions();
         DataCache<UInt160, AccountState> IPersistence.Accounts => GetAccounts();
         DataCache<UInt256, UnspentCoinState> IPersistence.UnspentCoins => GetUnspentCoins();
+        DataCache<UInt160, UnspentCoinState> IPersistence.UnspentCoinsOfAddress => GetUnspentCoinsOfAddress();
         DataCache<UInt256, SpentCoinState> IPersistence.SpentCoins => GetSpentCoins();
         DataCache<ECPoint, ValidatorState> IPersistence.Validators => GetValidators();
         DataCache<UInt256, AssetState> IPersistence.Assets => GetAssets();
@@ -25,6 +26,7 @@ namespace Bhp.Persistence
         public abstract DataCache<UInt256, TransactionState> GetTransactions();
         public abstract DataCache<UInt160, AccountState> GetAccounts();
         public abstract DataCache<UInt256, UnspentCoinState> GetUnspentCoins();
+        public abstract DataCache<UInt160, UnspentCoinState> GetUnspentCoinsOfAddress();
         public abstract DataCache<UInt256, SpentCoinState> GetSpentCoins();
         public abstract DataCache<ECPoint, ValidatorState> GetValidators();
         public abstract DataCache<UInt256, AssetState> GetAssets();

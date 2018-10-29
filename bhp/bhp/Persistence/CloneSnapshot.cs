@@ -11,6 +11,7 @@ namespace Bhp.Persistence
         public override DataCache<UInt256, TransactionState> Transactions { get; }
         public override DataCache<UInt160, AccountState> Accounts { get; }
         public override DataCache<UInt256, UnspentCoinState> UnspentCoins { get; }
+        public override DataCache<UInt160, UnspentCoinState> UnspentCoinsOfAddress { get; }
         public override DataCache<UInt256, SpentCoinState> SpentCoins { get; }
         public override DataCache<ECPoint, ValidatorState> Validators { get; }
         public override DataCache<UInt256, AssetState> Assets { get; }
@@ -28,6 +29,7 @@ namespace Bhp.Persistence
             this.Transactions = snapshot.Transactions.CreateSnapshot();
             this.Accounts = snapshot.Accounts.CreateSnapshot();
             this.UnspentCoins = snapshot.UnspentCoins.CreateSnapshot();
+            this.UnspentCoinsOfAddress = snapshot.UnspentCoinsOfAddress.CreateSnapshot();
             this.SpentCoins = snapshot.SpentCoins.CreateSnapshot();
             this.Validators = snapshot.Validators.CreateSnapshot();
             this.Assets = snapshot.Assets.CreateSnapshot();

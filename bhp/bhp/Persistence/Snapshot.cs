@@ -17,6 +17,7 @@ namespace Bhp.Persistence
         public abstract DataCache<UInt256, TransactionState> Transactions { get; }
         public abstract DataCache<UInt160, AccountState> Accounts { get; }
         public abstract DataCache<UInt256, UnspentCoinState> UnspentCoins { get; }
+        public abstract DataCache<UInt160, List<UnspentCoinState>> UnspentCoinsOfAddress { get; }
         public abstract DataCache<UInt256, SpentCoinState> SpentCoins { get; }
         public abstract DataCache<ECPoint, ValidatorState> Validators { get; }
         public abstract DataCache<UInt256, AssetState> Assets { get; }
@@ -124,11 +125,13 @@ namespace Bhp.Persistence
         {
             Accounts.DeleteWhere((k, v) => !v.IsFrozen && v.Votes.Length == 0 && v.Balances.All(p => p.Value <= Fixed8.Zero));
             UnspentCoins.DeleteWhere((k, v) => v.Items.All(p => p.HasFlag(CoinState.Spent)));
+            UnspentCoinsOfAddress.DeleteWhere((k, v) => v.Items.All(p => p.HasFlag(CoinState.Spent)));
             SpentCoins.DeleteWhere((k, v) => v.Items.Count == 0);
             Blocks.Commit();
             Transactions.Commit();
             Accounts.Commit();
             UnspentCoins.Commit();
+            UnspentCoinsOfAddress.Commit();
             SpentCoins.Commit();
             Validators.Commit();
             Assets.Commit();

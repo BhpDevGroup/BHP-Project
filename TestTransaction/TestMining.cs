@@ -26,14 +26,14 @@ namespace TestTransaction
         //common
         static string assetid = "0x13f76fabfe19f3ec7fd54d63179a156bafc44afc53a7f07a7a15f6724c0aa854";
         static string dbPath = @"D:\Projects\BHP-Project\TestTransaction\bin\Debug\netcoreapp2.1\db";
-        static string currentScript = "210225a59524cf0c06ed23698eb57bba24fdb22781cb4db18728e28aab69c28611aeac";
-        static string currentHexPri = "6a57c00d95e88fe9dc2bf94e09db2470c1cd4e4a2698cb19d7461721d1c6bcfd";
+        static string currentScript = "21036c383c530ad4ec9ed3370877ead28223bba812d30208055fb125e57995b06c01ac";
+        static string currentHexPri = "d55ccd8b368aca2402003f39549ad7b75385c226009b3080e0d886959b75b5ce";
         //MinnerTransaction
-        static string currentAddress = "AMaHHa7ay9rH9ipLAXCHr7PaUqp2Rxn6rf";
+        static string currentAddress = "AFwBJwUrh9RFGp4UE4wBE9GR2zsAGeWJsM";
         //GlobalTransfer
-        static string preTxId = "0x13190bbae2b091124549b7fd5cd715a05be6b3b1f707923248b78879e3e564e3";
-        static string tansferAddress = "AQ4CyKoGL5rc6tmvNifmXKtLtb9mDWg4Tc";        
-        static Fixed8 tansferValue = Fixed8.FromDecimal(10);
+        static string preTxId = "0xf9b9ee754e63dbcf632f87cdc135cc9a2fbc26953a3de0d7c1dacdd78fd97f8c";
+        static string tansferAddress = "AHB1muqmPTbeAJ9PPuXV8XfbjfLKtTunjC";        
+        static Fixed8 tansferValue = Fixed8.FromDecimal(4.69M);        
         static ushort prevIndex = 0;
 
         public static void Test()
@@ -48,11 +48,11 @@ namespace TestTransaction
             Console.WriteLine("Please input any key...");
             Console.ReadKey();
 
-            //SignDelegate2 sign = new SignDelegate2(SignWithoutWallet);
-            SignDelegate2 sign = new SignDelegate2(SignWithoutWallet2);
+            SignDelegate2 sign = new SignDelegate2(SignWithoutWallet);
+            //SignDelegate2 sign = new SignDelegate2(SignWithoutWallet2);
 
-            //var tx = CreateGlobalTransfer(sign);
-            var tx = CreateMinnerTransaction(sign);
+            var tx = CreateGlobalTransfer(sign);
+            //var tx = CreateMinnerTransaction(sign);
 
             system.LocalNode.Tell(new LocalNode.Relay { Inventory = tx });
                         
