@@ -23,7 +23,7 @@ namespace Bhp.Persistence.LevelDB
             {
                 for (it.SeekToFirst(); it.Valid(); it.Next())
                 {
-                    batch.Delete(it.Key());
+                    batch.Delete(it.Key()); 
                 }
             }
             db.Put(WriteOptions.Default, SliceBuilder.Begin(Prefixes.SYS_Version), Assembly.GetExecutingAssembly().GetName().Version.ToString());

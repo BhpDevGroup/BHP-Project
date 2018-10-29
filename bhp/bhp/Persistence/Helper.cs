@@ -115,25 +115,10 @@ namespace Bhp.Persistence
         }
 
         public static IEnumerable<TransactionOutput> GetUnspent(this IPersistence persistence, UInt160 addressHash)
-        {
-            int index = 0;
+        { 
             List<TransactionOutput> outputs = new List<TransactionOutput>();
-            while (true)
-            {
-                UnspentCoinState state = persistence.UnspentCoins[index];
-                if (state == null)
-                {
-                    break;
-                }
-                else
-                {
-                    
-                }
-                ++index;
-            }
-
-            return outputs;
-            
+           
+            return outputs; 
         }
     }
 }

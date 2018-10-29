@@ -16,27 +16,7 @@ namespace Bhp.IO.Caching
         }
 
         private readonly Dictionary<TKey, Trackable> dictionary = new Dictionary<TKey, Trackable>();
-
-        public TValue this[int index]
-        {
-            get
-            {
-                lock (dictionary)
-                {
-                    Trackable[] values = dictionary.Values.ToArray();
-                    if (index < values.Count())
-                    {
-                        Trackable trackable = dictionary.Values.ToArray()[index];
-                        if (trackable.State == TrackState.Added || trackable.State == TrackState.Changed)
-                        {
-                            return trackable.Item;
-                        }
-                    }
-                    return null;
-                }
-            }
-        }
-
+         
         public TValue this[TKey key]
         {
             get

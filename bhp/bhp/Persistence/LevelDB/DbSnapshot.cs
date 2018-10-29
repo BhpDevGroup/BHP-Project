@@ -17,7 +17,7 @@ namespace Bhp.Persistence.LevelDB
         public override DataCache<UInt256, TransactionState> Transactions { get; }
         public override DataCache<UInt160, AccountState> Accounts { get; }
         public override DataCache<UInt256, UnspentCoinState> UnspentCoins { get; }
-        public override DataCache<UInt160, UnspentCoinState> UnspentCoinsOfAddress { get; }
+        //public override DataCache<UInt160, UnspentCoinState> UnspentCoinsOfAddress { get; }
         public override DataCache<UInt256, SpentCoinState> SpentCoins { get; }
         public override DataCache<ECPoint, ValidatorState> Validators { get; }
         public override DataCache<UInt256, AssetState> Assets { get; }
@@ -38,7 +38,7 @@ namespace Bhp.Persistence.LevelDB
             Transactions = new DbCache<UInt256, TransactionState>(db, options, batch, Prefixes.DATA_Transaction);
             Accounts = new DbCache<UInt160, AccountState>(db, options, batch, Prefixes.ST_Account);
             UnspentCoins = new DbCache<UInt256, UnspentCoinState>(db, options, batch, Prefixes.ST_Coin);
-            UnspentCoinsOfAddress = new DbCache<UInt160, UnspentCoinState>(db, options, batch, Prefixes.ST_Coin);
+            //UnspentCoinsOfAddress = new DbCache<UInt160, UnspentCoinState>(db, options, batch, Prefixes.ST_Coin);
             SpentCoins = new DbCache<UInt256, SpentCoinState>(db, options, batch, Prefixes.ST_SpentCoin);
             Validators = new DbCache<ECPoint, ValidatorState>(db, options, batch, Prefixes.ST_Validator);
             Assets = new DbCache<UInt256, AssetState>(db, options, batch, Prefixes.ST_Asset);

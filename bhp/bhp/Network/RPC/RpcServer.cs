@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
+using System.Security.Cryptography;
 
 namespace Bhp.Network.RPC
 {
@@ -342,6 +343,25 @@ namespace Bhp.Network.RPC
                         UInt256 hash = UInt256.Parse(_params[0].AsString());
                         ushort index = (ushort)_params[1].AsNumber();
                         return Blockchain.Singleton.Store.GetUnspent(hash, index)?.ToJson(index);
+                    }
+                case "createaddress":
+                    {
+                        byte[] privateKey = new byte[32];
+                        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+                        {
+                            rng.GetBytes(privateKey);
+
+                            KeyPair key = new KeyPair(privateKey);
+                            UInt160 script_hash = Contract.CreateSignatureRedeemScript(key.PublicKey).ToScriptHash();
+                            string address = script_hash.ToAddress();
+
+                            JObject json = new JObject();
+                            json["address"] = address;
+                            json["pubkey"] = key.PublicKey.EncodePoint(true).ToHexString();
+                            json["prikey"] = key.PrivateKey.ToHexString();
+                            json["wif"] = key.Export();
+                            return json;
+                        }
                     }
                 case "getutxos":
                     {
