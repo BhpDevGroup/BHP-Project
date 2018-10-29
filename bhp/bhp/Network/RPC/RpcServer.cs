@@ -343,6 +343,16 @@ namespace Bhp.Network.RPC
                         ushort index = (ushort)_params[1].AsNumber();
                         return Blockchain.Singleton.Store.GetUnspent(hash, index)?.ToJson(index);
                     }
+                case "getutxos":
+                    {
+                        if (_params.Count < 1)
+                        {
+                            throw new RpcException(-100, "Address is not empty.");
+                        }
+                        ushort index = 0;
+                        UInt160 script_hash = _params[0].AsString().ToScriptHash(); 
+                        return Blockchain.Singleton.GetSnapshot().GetUnspent(script_hash).Select(p => p.ToJson(index++)).ToArray();
+                    }
                 case "getvalidators":
                     using (Snapshot snapshot = Blockchain.Singleton.GetSnapshot())
                     {
