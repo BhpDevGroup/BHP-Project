@@ -352,26 +352,22 @@ namespace Bhp.Network.RPC
                             rng.GetBytes(privateKey);
 
                             KeyPair key = new KeyPair(privateKey);
-                            UInt160 script_hash = Contract.CreateSignatureRedeemScript(key.PublicKey).ToScriptHash();
-                            string address = script_hash.ToAddress();
+                            byte[] pubkey = Contract.CreateSignatureRedeemScript(key.PublicKey);
 
                             JObject json = new JObject();
-                            json["address"] = address;
+                            json["address"] = pubkey.ToScriptHash().ToAddress();
                             json["pubkey"] = key.PublicKey.EncodePoint(true).ToHexString();
                             json["prikey"] = key.PrivateKey.ToHexString();
                             json["wif"] = key.Export();
+                            json["script"] = pubkey.ToHexString();
                             return json;
                         }
                     }
                 case "getutxos":
                     {
-                        if (_params.Count < 1)
-                        {
-                            throw new RpcException(-100, "Address is not empty.");
-                        }
-                        ushort index = 0;
-                        UInt160 script_hash = _params[0].AsString().ToScriptHash(); 
-                        return Blockchain.Singleton.GetSnapshot().GetUnspent(script_hash).Select(p => p.ToJson(index++)).ToArray();
+                        UInt160 script_hash = _params[0].AsString().ToScriptHash();
+                        AccountState account = Blockchain.Singleton.Store.GetAccounts().TryGet(script_hash) ?? new AccountState(script_hash);
+                        return account.ToJson();
                     }
                 case "getvalidators":
                     using (Snapshot snapshot = Blockchain.Singleton.GetSnapshot())
