@@ -124,6 +124,7 @@ namespace Bhp.Ledger
         private readonly Dictionary<UInt256, Block> block_cache = new Dictionary<UInt256, Block>();
         private readonly Dictionary<uint, Block> block_cache_unverified = new Dictionary<uint, Block>();
         private readonly ConcurrentDictionary<UInt256, Transaction> mem_pool = new ConcurrentDictionary<UInt256, Transaction>();
+        private readonly ConcurrentDictionary<UInt256, Transaction> mem_pool_unverified = new ConcurrentDictionary<UInt256, Transaction>();
         internal readonly RelayCache RelayCache = new RelayCache(100);
         private readonly HashSet<IActorRef> subscribers = new HashSet<IActorRef>();
         private Snapshot currentSnapshot;
@@ -235,6 +236,12 @@ namespace Bhp.Ledger
             if (mem_pool.TryGetValue(hash, out Transaction transaction))
                 return transaction;
             return Store.GetTransaction(hash);
+        }
+
+        internal Transaction GetUnverifiedTransaction(UInt256 hash)
+        {
+            mem_pool_unverified.TryGetValue(hash, out Transaction transaction);
+            return transaction;
         }
 
         private void OnImport(IEnumerable<Block> blocks)
@@ -601,6 +608,8 @@ namespace Bhp.Ledger
                     snapshot.HeaderHashIndex.GetAndChange().Hash = block.Hash;
                     snapshot.HeaderHashIndex.GetAndChange().Index = block.Index;
                 }
+                foreach (IPersistencePlugin plugin in Plugin.PersistencePlugins)
+                    plugin.OnPersist(snapshot);
                 snapshot.Commit();
             }
             UpdateCurrentSnapshot();

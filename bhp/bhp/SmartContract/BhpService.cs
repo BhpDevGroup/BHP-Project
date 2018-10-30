@@ -54,8 +54,7 @@ namespace Bhp.SmartContract
             Register("Bhp.Transaction.GetReferences", Transaction_GetReferences);
             Register("Bhp.Transaction.GetUnspentCoins", Transaction_GetUnspentCoins);
             Register("Bhp.Transaction.GetWitnesses", Transaction_GetWitnesses);
-            Register("Bhp.InvocationTransaction.GetScript", InvocationTransaction_GetScript);
-            Register("Bhp.Witness.GetInvocationScript", Witness_GetInvocationScript);
+            Register("Bhp.InvocationTransaction.GetScript", InvocationTransaction_GetScript); 
             Register("Bhp.Witness.GetVerificationScript", Witness_GetVerificationScript);
             Register("Bhp.Attribute.GetUsage", Attribute_GetUsage);
             Register("Bhp.Attribute.GetData", Attribute_GetData);
@@ -285,19 +284,8 @@ namespace Bhp.SmartContract
                 return true;
             }
             return false;
-        }
-
-        private bool Witness_GetInvocationScript(ExecutionEngine engine)
-        {
-            if (engine.CurrentContext.EvaluationStack.Pop() is InteropInterface _interface)
-            {
-                Witness witness = _interface.GetInterface<Witness>();
-                if (witness == null) return false;
-                engine.CurrentContext.EvaluationStack.Push(witness.InvocationScript);
-                return true;
-            }
-            return false;
-        }
+        } 
+ 
         private bool Witness_GetVerificationScript(ExecutionEngine engine)
         {
             if (engine.CurrentContext.EvaluationStack.Pop() is InteropInterface _interface)

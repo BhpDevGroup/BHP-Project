@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Copyright>2018 The Bhp Project</Copyright>
-    <AssemblyTitle>Neo.Compiler.JVM</AssemblyTitle>
+    <AssemblyTitle>Bhp.Compiler.JVM</AssemblyTitle>
     <Version>1.0.0</Version>
     <Authors>The Bhp Project</Authors>
     <OutputType>Exe</OutputType>

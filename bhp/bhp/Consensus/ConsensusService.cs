@@ -111,14 +111,12 @@ namespace Bhp.Consensus
                 mem_pool = plugin.FilterForBlock(mem_pool);
             List<Transaction> transactions = mem_pool.ToList();
             Fixed8 amount_netfee = Block.CalculateNetFee(transactions);
-             
             TransactionOutput[] outputs = amount_netfee == Fixed8.Zero ? new TransactionOutput[0] : new[] { new TransactionOutput
             {
                 AssetId = Blockchain.UtilityToken.Hash,
                 Value = amount_netfee,
                 ScriptHash = wallet.GetChangeAddress()
-            } }; 
- 
+            } };
             while (true)
             {
                 ulong nonce = GetNonce();
@@ -130,7 +128,6 @@ namespace Bhp.Consensus
                     Outputs = outputs,
                     Witnesses = new Witness[0]
                 };
-
                 if (!context.Snapshot.ContainsTransaction(tx.Hash))
                 {
                     context.Nonce = nonce;
@@ -153,7 +150,7 @@ namespace Bhp.Consensus
             foreach (IPolicyPlugin plugin in Plugin.Policies)
                 mem_pool = plugin.FilterForBlock(mem_pool);
             List<Transaction> transactions = mem_pool.ToList();
-            Fixed8 amount_netfee = Block.CalculateNetFee(transactions);  
+            Fixed8 amount_netfee = Block.CalculateNetFee(transactions);
 
             MiningTransaction miningTransaction = new MiningTransaction(amount_netfee);
 
@@ -194,7 +191,7 @@ namespace Bhp.Consensus
             Log($"initialize: height={context.BlockIndex} view={view_number} index={context.MyIndex} role={(context.MyIndex == context.PrimaryIndex ? ConsensusState.Primary : ConsensusState.Backup)}");
             if (context.MyIndex == context.PrimaryIndex)
             {
-                context.State |= ConsensusState.Primary;              
+                context.State |= ConsensusState.Primary;
                 TimeSpan span = DateTime.UtcNow - block_received_time;
                 if (span >= Blockchain.TimePerBlock)
                     ChangeTimer(TimeSpan.Zero);
@@ -224,6 +221,7 @@ namespace Bhp.Consensus
 
         private void OnConsensusPayload(ConsensusPayload payload)
         {
+            if (context.State.HasFlag(ConsensusState.BlockSent)) return;
             if (payload.ValidatorIndex == context.MyIndex) return;
             if (payload.Version != ConsensusContext.Version)
                 return;
@@ -285,16 +283,32 @@ namespace Bhp.Consensus
             context.NextConsensus = message.NextConsensus;
             context.TransactionHashes = message.TransactionHashes;
             context.Transactions = new Dictionary<UInt256, Transaction>();
-            if (!Crypto.Default.VerifySignature(context.MakeHeader().GetHashData(), message.Signature, context.Validators[payload.ValidatorIndex].EncodePoint(false))) return;
-            context.Signatures = new byte[context.Validators.Length][];
+            byte[] hashData = context.MakeHeader().GetHashData();
+            if (!Crypto.Default.VerifySignature(hashData, message.Signature, context.Validators[payload.ValidatorIndex].EncodePoint(false))) return;
+            for (int i = 0; i < context.Signatures.Length; i++)
+                if (context.Signatures[i] != null)
+                    if (!Crypto.Default.VerifySignature(hashData, context.Signatures[i], context.Validators[i].EncodePoint(false)))
+                        context.Signatures[i] = null;
             context.Signatures[payload.ValidatorIndex] = message.Signature;
             Dictionary<UInt256, Transaction> mempool = Blockchain.Singleton.GetMemoryPool().ToDictionary(p => p.Hash);
+            List<Transaction> unverified = new List<Transaction>();
             foreach (UInt256 hash in context.TransactionHashes.Skip(1))
             {
                 if (mempool.TryGetValue(hash, out Transaction tx))
+                {
                     if (!AddTransaction(tx, false))
                         return;
+                }
+                else
+                {
+                    tx = Blockchain.Singleton.GetUnverifiedTransaction(hash);
+                    if (tx != null)
+                        unverified.Add(tx);
+                }
             }
+            foreach (Transaction tx in unverified)
+                if (!AddTransaction(tx, true))
+                    return;
             if (!AddTransaction(message.MinerTransaction, true)) return;
             if (context.Transactions.Count < context.TransactionHashes.Length)
             {
@@ -309,12 +323,17 @@ namespace Bhp.Consensus
         private void OnPrepareResponseReceived(ConsensusPayload payload, PrepareResponse message)
         {
             Log($"{nameof(OnPrepareResponseReceived)}: height={payload.BlockIndex} view={message.ViewNumber} index={payload.ValidatorIndex}");
-            if (context.State.HasFlag(ConsensusState.BlockSent)) return;
             if (context.Signatures[payload.ValidatorIndex] != null) return;
-            Block header = context.MakeHeader();
-            if (header == null || !Crypto.Default.VerifySignature(header.GetHashData(), message.Signature, context.Validators[payload.ValidatorIndex].EncodePoint(false))) return;
-            context.Signatures[payload.ValidatorIndex] = message.Signature;
-            CheckSignatures();
+            byte[] hashData = context.MakeHeader()?.GetHashData();
+            if (hashData == null)
+            {
+                context.Signatures[payload.ValidatorIndex] = message.Signature;
+            }
+            else if (Crypto.Default.VerifySignature(hashData, message.Signature, context.Validators[payload.ValidatorIndex].EncodePoint(false)))
+            {
+                context.Signatures[payload.ValidatorIndex] = message.Signature;
+                CheckSignatures();
+            }
         }
 
         protected override void OnReceive(object message)
@@ -347,6 +366,7 @@ namespace Bhp.Consensus
 
         private void OnTimer(Timer timer)
         {
+            if (context.State.HasFlag(ConsensusState.BlockSent)) return;
             if (timer.Height != context.BlockIndex || timer.ViewNumber != context.ViewNumber) return;
             Log($"timeout: height={timer.Height} view={timer.ViewNumber} state={context.State}");
             if (context.State.HasFlag(ConsensusState.Primary) && !context.State.HasFlag(ConsensusState.RequestSent))
@@ -376,7 +396,7 @@ namespace Bhp.Consensus
         private void OnTransaction(Transaction transaction)
         {
             if (transaction.Type == TransactionType.MinerTransaction) return;
-            if (!context.State.HasFlag(ConsensusState.Backup) || !context.State.HasFlag(ConsensusState.RequestReceived) || context.State.HasFlag(ConsensusState.SignatureSent) || context.State.HasFlag(ConsensusState.ViewChanging))
+            if (!context.State.HasFlag(ConsensusState.Backup) || !context.State.HasFlag(ConsensusState.RequestReceived) || context.State.HasFlag(ConsensusState.SignatureSent) || context.State.HasFlag(ConsensusState.ViewChanging) || context.State.HasFlag(ConsensusState.BlockSent))
                 return;
             if (context.Transactions.ContainsKey(transaction.Hash)) return;
             if (!context.TransactionHashes.Contains(transaction.Hash)) return;

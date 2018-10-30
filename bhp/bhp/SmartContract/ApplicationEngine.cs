@@ -535,8 +535,7 @@ namespace Bhp.SmartContract
                 case "Bhp.Transaction.GetUnspentCoins":
                     return 200;
                 case "Bhp.Transaction.GetWitnesses":
-                    return 200;
-                case "Bhp.Witness.GetInvocationScript":
+                    return 200; 
                 case "Bhp.Witness.GetVerificationScript":
                     return 100;
                 case "Bhp.Account.IsStandard":

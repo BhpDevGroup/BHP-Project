@@ -17,7 +17,6 @@ namespace Bhp.Persistence
         public abstract DataCache<UInt256, TransactionState> Transactions { get; }
         public abstract DataCache<UInt160, AccountState> Accounts { get; }
         public abstract DataCache<UInt256, UnspentCoinState> UnspentCoins { get; }
-        //public abstract DataCache<UInt160, UnspentCoinState> UnspentCoinsOfAddress { get; }
         public abstract DataCache<UInt256, SpentCoinState> SpentCoins { get; }
         public abstract DataCache<ECPoint, ValidatorState> Validators { get; }
         public abstract DataCache<UInt256, AssetState> Assets { get; }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Copyright>2018 The Bhp Project</Copyright>
-    <AssemblyTitle>Neo.Compiler.ASM</AssemblyTitle>
+    <AssemblyTitle>Bhp.Compiler.ASM</AssemblyTitle>
     <Version>1.0.0</Version>
     <Authors>The Bhp Project</Authors>
     <TargetFramework>netcoreapp2.1</TargetFramework>

@@ -10,6 +10,6 @@ namespace Bhp.Mining
         public static readonly string PoSAddressOfMainNet = "AM9kJGBWxnxkxKQF7PE9Wq3UVY31nDw1ap";
         public static readonly string PoSAddressOfTestNet = "AbUAKqt8crJQnhDJWQtFGHT7Pgv9ABnQE6";
 
-        public static string[] PoSAddress = { PoSAddressOfMainNet };
+        public static string[] PoSAddress = { PoSAddressOfTestNet };
     }
 }
