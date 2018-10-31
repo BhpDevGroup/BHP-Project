@@ -95,7 +95,7 @@ namespace Bhp.UI
         }
 
         private void AddTransaction(Transaction tx, uint? height, uint time)
-        {
+        { 
             int? confirmations = (int)Blockchain.Singleton.Height - (int?)height + 1;
             if (confirmations <= 0) confirmations = null;
             string confirmations_str = confirmations?.ToString() ?? Strings.Unconfirmed;
@@ -144,6 +144,8 @@ namespace Bhp.UI
         {
             if (IsDisposed) return;
 
+            Application.DoEvents();
+
             persistence_time = DateTime.UtcNow;
             if (Program.CurrentWallet != null)
             {
@@ -174,7 +176,7 @@ namespace Bhp.UI
                         p.BlockIndex,
                         Time = snapshot.GetHeader(p.BlockIndex).Timestamp
                     }).OrderBy(p => p.Time))
-                    {
+                    { 
                         AddTransaction(i.Transaction, i.BlockIndex, i.Time);
                     }
                 //Program.CurrentWallet.BalanceChanged += CurrentWallet_BalanceChanged;
@@ -209,7 +211,7 @@ namespace Bhp.UI
         }
 
         private void CurrentWallet_WalletTransaction(object sender, WalletTransactionEventArgs e)
-        {
+        { 
             balance_changed = true;
             BeginInvoke(new Action<Transaction, uint?, uint>(AddTransaction), e.Transaction, e.Height, e.Time);
         }
@@ -228,7 +230,7 @@ namespace Bhp.UI
                 uint? height = item.Tag as uint?;
                 int? confirmations = (int)Blockchain.Singleton.Height - (int?)height + 1;
                 if (confirmations <= 0) confirmations = null;
-                item.SubItems["confirmations"].Text = confirmations?.ToString() ?? Strings.Unconfirmed;
+                item.SubItems["confirmations"].Text = confirmations?.ToString() ?? Strings.Unconfirmed;              
             }
         }
 
