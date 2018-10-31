@@ -95,20 +95,27 @@ namespace Bhp.UI
         }
 
         private void AddTransaction(Transaction tx, uint? height, uint time)
-        { 
-            int? confirmations = (int)Blockchain.Singleton.Height - (int?)height + 1;
-            if (confirmations <= 0) confirmations = null;
-            string confirmations_str = confirmations?.ToString() ?? Strings.Unconfirmed;
-            string txid = tx.Hash.ToString();
-            if (listView3.Items.ContainsKey(txid))
-            {
-                listView3.Items[txid].Tag = height;
-                listView3.Items[txid].SubItems["confirmations"].Text = confirmations_str;
-            }
-            else
-            {
-                listView3.Items.Insert(0, new ListViewItem(new[]
+        {
+            if (RequireListView3())
+            { 
+                if (listView3.Items.Count >= 100)
                 {
+                    listView3.Items.RemoveAt(listView3.Items.Count - 1);
+                }
+
+                int? confirmations = (int)Blockchain.Singleton.Height - (int?)height + 1;
+                if (confirmations <= 0) confirmations = null;
+                string confirmations_str = confirmations?.ToString() ?? Strings.Unconfirmed;
+                string txid = tx.Hash.ToString();
+                if (listView3.Items.ContainsKey(txid))
+                {
+                    listView3.Items[txid].Tag = height;
+                    listView3.Items[txid].SubItems["confirmations"].Text = confirmations_str;
+                }
+                else
+                {
+                    listView3.Items.Insert(0, new ListViewItem(new[]
+                    {
                             new ListViewItem.ListViewSubItem
                             {
                                 Name = "time",
@@ -133,10 +140,39 @@ namespace Bhp.UI
                             //end
 
                         }, -1)
+                    {
+                        Name = txid,
+                        Tag = height
+                    });
+                }
+
+                ReleaseListView3(); 
+            }
+        }
+
+        private string listView3Idle = "idle";
+
+        private bool RequireListView3()
+        {
+            lock (listView3Idle)
+            {
+                if ("idle".Equals(listView3Idle))
                 {
-                    Name = txid,
-                    Tag = height
-                });
+                    listView3Idle = "busy";
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        private void ReleaseListView3()
+        {
+            lock (listView3Idle)
+            {
+                listView3Idle = "idle";
             }
         }
 
@@ -154,7 +190,7 @@ namespace Bhp.UI
                     balance_changed = true;
             }
 
-            BeginInvoke(new Action(RefreshConfirmations));
+            //BeginInvoke(new Action(RefreshConfirmations));
         }
 
         private void ChangeWallet(Wallet wallet)
@@ -221,16 +257,22 @@ namespace Bhp.UI
             if (indexer is null)
                 indexer = new WalletIndexer(Settings.Default.Paths.Index);
             return indexer;
-        }
+        }  
 
         private void RefreshConfirmations()
         {
-            foreach (ListViewItem item in listView3.Items)
+            if (RequireListView3())
             {
-                uint? height = item.Tag as uint?;
-                int? confirmations = (int)Blockchain.Singleton.Height - (int?)height + 1;
-                if (confirmations <= 0) confirmations = null;
-                item.SubItems["confirmations"].Text = confirmations?.ToString() ?? Strings.Unconfirmed;              
+                foreach (ListViewItem item in listView3.Items)
+                {
+                    uint? height = item.Tag as uint?;
+                    int? confirmations = (int)Blockchain.Singleton.Height - (int?)height + 1;
+                    if (confirmations <= 0) confirmations = null;
+                    item.SubItems["confirmations"].Text = confirmations?.ToString() ?? Strings.Unconfirmed;
+
+                    Application.DoEvents();
+                }
+                ReleaseListView3();
             }
         }
 
@@ -248,8 +290,16 @@ namespace Bhp.UI
             ChangeWallet(null);
         }
 
+        private bool timer1_working = false;
+
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (timer1_working)
+            {
+                return;
+            }
+            timer1_working = true;
+
             uint walletHeight = 0;
 
             if (Program.CurrentWallet != null)
@@ -306,6 +356,8 @@ namespace Bhp.UI
                                 Fixed8 gas = balance_gas.ContainsKey(script_hash) ? balance_gas[script_hash] : Fixed8.Zero;
                                 item.SubItems["BHP"].Text = bhp.ToString();
                                 item.SubItems["BHPGas"].Text = gas.ToString();
+
+                                Application.DoEvents();
                             }
                             foreach (AssetState asset in listView2.Items.OfType<ListViewItem>().Select(p => p.Tag as AssetState).Where(p => p != null).ToArray())
                             {
@@ -313,6 +365,8 @@ namespace Bhp.UI
                                 {
                                     listView2.Items.RemoveByKey(asset.AssetId.ToString());
                                 }
+
+                                Application.DoEvents();
                             }
                             foreach (var asset in assets.Values)
                             {
@@ -356,6 +410,8 @@ namespace Bhp.UI
                                         UseItemStyleForSubItems = false
                                     });
                                 }
+
+                                Application.DoEvents();
                             }
                             balance_changed = false;
                         }
@@ -408,6 +464,8 @@ namespace Bhp.UI
                                     break;
                             }
                         }
+
+                        Application.DoEvents();
                     }
                 }
                 if (check_brc5_balance && persistence_span > TimeSpan.FromSeconds(2))
@@ -473,10 +531,14 @@ namespace Bhp.UI
                                 UseItemStyleForSubItems = false
                             });
                         }
+
+                        Application.DoEvents();
                     }
                     check_brc5_balance = false;
                 }
             }
+
+            timer1_working = false;
         }
 
         private void 创建钱包数据库NToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1067,6 +1129,8 @@ namespace Bhp.UI
             //交易TToolStripMenuItem.Visible = Settings.Default.AppConfig.Development;
             高级AToolStripMenuItem.Visible = Settings.Default.AppConfig.Development;
             开发人员工具TToolStripMenuItem.Visible = Settings.Default.AppConfig.Development;
+
+            timer2.Enabled = true;
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -1115,6 +1179,20 @@ namespace Bhp.UI
 
                 MessageBox.Show("导出钱包信息成功.", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private bool timer2_working = false;
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            if (timer2_working)
+            {
+                return;
+            }
+
+            timer2_working = true;
+            RefreshConfirmations();
+            timer2_working = false;
         }
     }
 }

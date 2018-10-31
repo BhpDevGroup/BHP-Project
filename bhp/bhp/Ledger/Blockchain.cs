@@ -438,7 +438,7 @@ namespace Bhp.Ledger
 
         private void Persist(Block block)
         {
-            Console.WriteLine($"{block.Index },{block.Hash}");
+            //Console.WriteLine($"{block.Index },{block.Hash}");
             using (Snapshot snapshot = GetSnapshot())
             {
                 snapshot.PersistingBlock = block;
