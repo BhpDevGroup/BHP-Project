@@ -53,6 +53,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RpcSecurity", "bhp-plugins\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdk", "sdk", "{A9FCACD3-2DC4-483B-850C-215BBF80A9B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LockContract", "LockContract\LockContract.csproj", "{D77133B8-77E2-46FE-ADA9-D95BCB0066AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bhp.SmartContract.Framework", "bhp-devpack-dotnet\Bhp.SmartContract.Framework\Bhp.SmartContract.Framework.csproj", "{95DDC0B1-677E-49BF-BB78-26D397DF9A21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +139,14 @@ Global
 		{3F99F967-FD76-4E44-A805-92F07C362D61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F99F967-FD76-4E44-A805-92F07C362D61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F99F967-FD76-4E44-A805-92F07C362D61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D77133B8-77E2-46FE-ADA9-D95BCB0066AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D77133B8-77E2-46FE-ADA9-D95BCB0066AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D77133B8-77E2-46FE-ADA9-D95BCB0066AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D77133B8-77E2-46FE-ADA9-D95BCB0066AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95DDC0B1-677E-49BF-BB78-26D397DF9A21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95DDC0B1-677E-49BF-BB78-26D397DF9A21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95DDC0B1-677E-49BF-BB78-26D397DF9A21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95DDC0B1-677E-49BF-BB78-26D397DF9A21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +165,7 @@ Global
 		{4C77B5F2-9696-4A0D-89D9-E21AE5D64E94} = {FA9AC707-2BD6-440C-9BD2-39ADAD9B1E08}
 		{C3A1167A-2276-4AFF-82F6-003139F275A5} = {5D6760E1-2817-4358-AAF6-9935CBF5B876}
 		{3F99F967-FD76-4E44-A805-92F07C362D61} = {9B4CB6B6-2480-459E-9EB5-7CBE6DCA959D}
+		{D77133B8-77E2-46FE-ADA9-D95BCB0066AB} = {5D6760E1-2817-4358-AAF6-9935CBF5B876}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5AB9CE67-DBD2-49E7-ADAA-29544EE1E2AF}

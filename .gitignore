@@ -18,6 +18,8 @@
 !*.cpp
 !*.h
 !*.hpp
+!**/Bhp.ConvertTask.dll
+!**/build.tasks
 
 bin/
 /bin
