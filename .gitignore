@@ -18,9 +18,9 @@
 !*.cpp
 !*.h
 !*.hpp
+
 !*.vcxproj
 !*.filters
-
 
 bin/
 /bin
