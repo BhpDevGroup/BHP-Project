@@ -52,4 +52,10 @@
     <ProjectReference Include="..\..\bhp-vm\src\bhp-vm\bhp-vm.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\packages\System.Data.SQLite.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

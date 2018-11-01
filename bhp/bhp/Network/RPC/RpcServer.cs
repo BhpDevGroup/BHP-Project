@@ -637,9 +637,110 @@ namespace Bhp.Network.RPC
                         json["isvalid"] = scriptHash != null;
                         return json;
                     }
+
+                case "backupwallet":
+                    if (wallet == null)
+                        throw new RpcException(-400, "Access denied");
+                    else
+                    {
+                        return BackupWallet();
+                    }
+                case "backupwallettosqlite":
+                    if (wallet == null)
+                        throw new RpcException(-400, "Access denied");
+                    else
+                    {
+                        try
+                        {
+                            string WalletName = _params.Count >= 1 ? _params[0].AsString().Trim() : wallet.Name.Trim();
+                            return "Backup Wallet Success! Name:" + SQLiteOperateForBackupWallet.BackupWalletToSQLite(WifToList(), WalletName);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(ex.ToString());
+                            //throw new RpcException(-401, "SQLite Exception");
+                        }
+                    }
+
+                case "recoverwalletfromsqlite":
+                    if (wallet == null)
+                        throw new RpcException(-400, "Access denied");
+                    else
+                    {
+                        if (_params.Count == 0)
+                        {
+                            return "Please Input BackupWalletName";
+                        }
+                        string BackWalletName = _params[0].AsString().Trim();
+                        //System.IO.Path.GetExtension(BackWalletName)
+
+                        string FileName = "";//不含后缀
+                        int nIndex = BackWalletName.LastIndexOf('.');
+                        if (nIndex >= 0)
+                        {
+                            FileName = BackWalletName.Substring(0, nIndex) + ".sqliet";
+                        }
+                        else
+                        {
+                            FileName = BackWalletName + ".sqliet";
+                        }
+                        List<string> wifs = SQLiteOperateForBackupWallet.RecoverWalletFromSQLite(FileName);
+                        foreach (string wif in wifs)
+                        {
+                            WalletAccount account;
+                            try
+                            {
+                                account = wallet.Import(wif);
+                            }
+                            catch (FormatException)
+                            {
+                                continue;
+                            }
+                        }
+                        if (wallet is BRC6Wallet walletBrc6)
+                            walletBrc6.Save();
+                        return "Recover Wallet Success";
+                    }
+
+                case "closewallet":
+                    if (wallet == null)
+                        throw new RpcException(-400, "Access denied");
+                    else
+                    {
+                        if (wallet is IDisposable disposable)
+                        {
+                            disposable.Dispose();
+                            wallet = null;
+                        }
+                        return "Close Wallet Success";
+                    }
+                    
                 default:
                     throw new RpcException(-32601, "Method not found");
             }
+        }
+        
+        private JObject BackupWallet()
+        {
+            return wallet.GetAccounts().Select(p => {
+                JObject json = new JObject();
+                json["address"] = p.Address;
+                json["pubkey"] = p.GetKey().PublicKey.EncodePoint(true).ToHexString();
+                json["wif"] = p.GetKey().Export().Trim();
+                json["prikey"] = p.GetKey().PrivateKey.ToHexString();
+                json["script"] = Contract.CreateSignatureRedeemScript(p.GetKey().PublicKey).ToHexString();
+                return json;
+            }).ToArray();
+        }
+
+        private List<string> WifToList()
+        {
+            List<string> wifs = new List<string>();
+            foreach (WalletAccount account in wallet.GetAccounts())
+            {
+                wifs.Add(account.GetKey().Export().Trim());
+            }
+            return wifs;
         }
 
         private static void AddRemak(string remark, Transaction tx)
