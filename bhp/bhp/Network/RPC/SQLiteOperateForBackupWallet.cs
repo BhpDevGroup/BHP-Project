@@ -57,7 +57,7 @@ namespace Bhp.Network.RPC
         //创建一个空的数据库
         static void CreateNewDatabase(string WalletName)
         {
-            BackupWalletName = $"{WalletName}-backup-{System.DateTime.Now.ToString("yyyymmddHHmmss")}.sqlite";
+            BackupWalletName = $"{WalletName}-backup-{System.DateTime.Now.ToString("yyyyMMddHHmmss")}.sqlite";
             if (!File.Exists(BackupWalletName))
             {
                 SQLiteConnection.CreateFile(BackupWalletName);

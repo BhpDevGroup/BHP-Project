@@ -652,7 +652,18 @@ namespace Bhp.Network.RPC
                     {
                         try
                         {
-                            string WalletName = _params.Count >= 1 ? _params[0].AsString().Trim() : wallet.Name.Trim();
+                            string path = ((Bhp.Wallets.BRC6.BRC6Wallet)wallet).Path;
+                            string WalletName = _params.Count >= 1 ? _params[0].AsString().Trim() : path.Substring(path.LastIndexOf("\\") + 1).Trim();
+                            
+                            int nIndex = WalletName.LastIndexOf('.');
+                            if (nIndex >= 0)
+                            {
+                                WalletName = WalletName.Substring(0, nIndex).Trim();
+                            }
+                            else
+                            {
+                                WalletName = WalletName.Trim();
+                            }
                             return "Backup Wallet Success! Name:" + SQLiteOperateForBackupWallet.BackupWalletToSQLite(WifToList(), WalletName);
                         }
                         catch (Exception ex)
@@ -678,11 +689,11 @@ namespace Bhp.Network.RPC
                         int nIndex = BackWalletName.LastIndexOf('.');
                         if (nIndex >= 0)
                         {
-                            FileName = BackWalletName.Substring(0, nIndex) + ".sqliet";
+                            FileName = BackWalletName.Substring(0, nIndex) + ".sqlite";
                         }
                         else
                         {
-                            FileName = BackWalletName + ".sqliet";
+                            FileName = BackWalletName + ".sqlite";
                         }
                         List<string> wifs = SQLiteOperateForBackupWallet.RecoverWalletFromSQLite(FileName);
                         foreach (string wif in wifs)
