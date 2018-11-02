@@ -579,7 +579,7 @@ namespace Bhp.UI
                             MessageBox.Show(Strings.PasswordIncorrect);
                             return;
                         }
-                        BRC6Wallet.Save();
+                        BRC6Wallet.Save(); 
                         BRC6Wallet.Unlock(dialog.Password);
                         wallet = BRC6Wallet;
                         MessageBox.Show($"{Strings.MigrateWalletSucceedMessage}\n{path}");

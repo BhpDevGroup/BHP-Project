@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
-using System.Security.Cryptography;
+using System.Security.Cryptography; 
 
 namespace Bhp.Network.RPC
 {
@@ -717,7 +717,7 @@ namespace Bhp.Network.RPC
                     if (wallet == null)
                         throw new RpcException(-400, "Access denied");
                     else
-                    {
+                    { 
                         if (wallet is IDisposable disposable)
                         {
                             disposable.Dispose();
