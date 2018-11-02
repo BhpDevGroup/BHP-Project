@@ -645,6 +645,7 @@ namespace Bhp.Network.RPC
                     {
                         return BackupWallet();
                     }
+                /*
                 case "backupwallettosqlite":
                     if (wallet == null)
                         throw new RpcException(-400, "Access denied");
@@ -712,6 +713,7 @@ namespace Bhp.Network.RPC
                             walletBrc6.Save();
                         return "Recover Wallet Success";
                     }
+                    */
 
                 case "closewallet":
                     if (wallet == null)
