@@ -268,7 +268,7 @@ namespace Bhp.SmartContract
                 if (tx == null) return false;
                 if (tx.Witnesses.Length > ApplicationEngine.MaxArraySize)
                     return false;
-                engine.CurrentContext.EvaluationStack.Push(tx.Witnesses.Select(p => StackItem.FromInterface(p)).ToArray());
+                engine.CurrentContext.EvaluationStack.Push(WitnessWrapper.Create(tx, Snapshot).Select(p => StackItem.FromInterface(p)).ToArray());
                 return true;
             }
             return false;
@@ -290,7 +290,7 @@ namespace Bhp.SmartContract
         {
             if (engine.CurrentContext.EvaluationStack.Pop() is InteropInterface _interface)
             {
-                Witness witness = _interface.GetInterface<Witness>();
+                WitnessWrapper witness = _interface.GetInterface<WitnessWrapper>();
                 if (witness == null) return false;
                 engine.CurrentContext.EvaluationStack.Push(witness.VerificationScript);
                 return true;

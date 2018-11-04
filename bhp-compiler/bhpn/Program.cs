@@ -108,6 +108,7 @@ namespace Bhp.Compiler
                 var conv = new ModuleConverter(log);
                 ConvOption option = new ConvOption();
                 option.useNep8 = !bCompatible;
+                option.useSysCallInteropHash = !bCompatible;
                 BhpModule am = conv.Convert(mod, option);
                 bytes = am.Build();
                 log.Log("convert succ");

@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Bhp.Network.P2P.Payloads
 {
-    public class Witness : ISerializable, IInteropInterface
+    public class Witness : ISerializable
     {
         public byte[] InvocationScript;
         public byte[] VerificationScript;

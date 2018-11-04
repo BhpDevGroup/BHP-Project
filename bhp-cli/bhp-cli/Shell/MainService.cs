@@ -689,7 +689,7 @@ namespace Bhp.Shell
             try
             {
                 Program.Wallet = OpenWallet(GetIndexer(), path, password);
-                system.OpenWallet(Program.Wallet);
+                system.OpenWallet(Program.Wallet, password);
             }
             catch (CryptographicException)
             {
@@ -948,9 +948,9 @@ namespace Bhp.Shell
             }
             if (useRPC)
             {
-
                 system.StartRpc(IPAddress.Any, Settings.Default.RPC.Port,
                     wallet: Program.Wallet,
+                    walletPassword: Settings.Default.UnlockWallet.Password,
                     sslCert: Settings.Default.RPC.SslCert,
                     password: Settings.Default.RPC.SslCertPassword);
 

@@ -34,14 +34,17 @@ namespace Bhp.Network.RPC
     {
         private readonly BhpSystem system;
         private Wallet wallet;
+        private WalletTimeLock walletTimeLock;
         private IWebHost host;
         private Fixed8 maxGasInvoke;
 
-        public RpcServer(BhpSystem system, Wallet wallet = null, Fixed8 maxGasInvoke = default(Fixed8))
+        public RpcServer(BhpSystem system, Wallet wallet = null,string password = null, Fixed8 maxGasInvoke = default(Fixed8))
         {
             this.system = system;
             this.wallet = wallet;
             this.maxGasInvoke = maxGasInvoke;
+
+            walletTimeLock = new WalletTimeLock(password);
         }
 
         private static JObject CreateErrorResponse(JObject id, int code, string message, JObject data = null)
@@ -72,18 +75,19 @@ namespace Bhp.Network.RPC
             }
         }
 
-        public void SetWallet(Wallet wallet)
+        public void SetWallet(Wallet wallet, string password)
         {
             if (this.wallet != null)
             {
                 this.wallet.Dispose();
             }
             this.wallet = wallet;
+            this.walletTimeLock.SetPassword(password);
         }
 
         private JObject GetInvokeResult(byte[] script)
         {
-            ApplicationEngine engine = ApplicationEngine.Run(script, null, null, false, maxGasInvoke);
+            ApplicationEngine engine = ApplicationEngine.Run(script, extraGAS: maxGasInvoke);
             JObject json = new JObject();
             json["script"] = script.ToHexString();
             json["state"] = engine.State;
@@ -142,9 +146,19 @@ namespace Bhp.Network.RPC
         } 
 
         private JObject Process(string method, JArray _params)
-        {
+        {          
             switch (method)
-            {
+            { 
+                case "unlock":
+                    if (wallet == null)return "wallet is null.";
+
+                    if (_params.Count < 2) return "parameter is error.";
+                    string password = _params[0].AsString();
+                    int duration = (int)_params[1].AsNumber();
+                    bool ok = walletTimeLock.UnLock(password, duration);
+                    string result = ok ? "success" : "failure";
+                    return $"wallet unlock {result}";
+
                 /*
                 case "dumpprivkey":
                     if (wallet == null)
@@ -169,8 +183,8 @@ namespace Bhp.Network.RPC
                         return asset?.ToJson() ?? throw new RpcException(-100, "Unknown asset");
                     }
                 case "getbalance":
-                    if (wallet == null)
-                        throw new RpcException(-400, "Access denied.");
+                    if (wallet == null || walletTimeLock.IsLocked())
+                        throw new RpcException(-400, "wallet is null or locked.");
                     else
                     {
                         JObject json = new JObject();
@@ -274,8 +288,8 @@ namespace Bhp.Network.RPC
                         return contract?.ToJson() ?? throw new RpcException(-100, "Unknown contract");
                     }
                 case "getnewaddress":
-                    if (wallet == null)
-                        throw new RpcException(-400, "Access denied");
+                    if (wallet == null || walletTimeLock.IsLocked())
+                        throw new RpcException(-400, "wallet is null or locked.");
                     else
                     {
                         WalletAccount account = wallet.CreateAccount();
@@ -391,8 +405,8 @@ namespace Bhp.Network.RPC
                         return json;
                     }
                 case "getwalletheight":
-                    if (wallet == null)
-                        throw new RpcException(-400, "Access denied.");
+                    if (wallet == null || walletTimeLock.IsLocked())
+                        throw new RpcException(-400, "wallet is null or locked.");
                     else
                         return (wallet.WalletHeight > 0) ? wallet.WalletHeight - 1 : 0;
                 case "invoke":
@@ -424,8 +438,8 @@ namespace Bhp.Network.RPC
                         return GetInvokeResult(script);
                     }
                 case "listaddress":
-                    if (wallet == null)
-                        throw new RpcException(-400, "Access denied.");
+                    if (wallet == null || walletTimeLock.IsLocked())
+                        throw new RpcException(-400, "wallet is null or locked.");
                     else
                         return wallet.GetAccounts().Select(p =>
                         {
@@ -437,8 +451,8 @@ namespace Bhp.Network.RPC
                             return account;
                         }).ToArray();
                 case "sendfrom":
-                    if (wallet == null)
-                        throw new RpcException(-400, "Access denied");
+                    if (wallet == null || walletTimeLock.IsLocked())
+                        throw new RpcException(-400, "wallet is null or locked.");
                     else
                     {
                         UIntBase assetId = UIntBase.Parse(_params[0].AsString());
@@ -480,8 +494,8 @@ namespace Bhp.Network.RPC
                         }
                     }
                 case "transfer":
-                    if (wallet == null)
-                        throw new RpcException(-400, "Access denied");
+                    if (wallet == null || walletTimeLock.IsLocked())
+                        throw new RpcException(-400, "wallet is null or locked.");
                     else
                     {
                         UIntBase assetId = UIntBase.Parse(_params[0].AsString());
@@ -523,8 +537,8 @@ namespace Bhp.Network.RPC
                         }
                     }
                 case "sendmany":
-                    if (wallet == null)
-                        throw new RpcException(-400, "Access denied");
+                    if (wallet == null || walletTimeLock.IsLocked())
+                        throw new RpcException(-400, "wallet is null or locked.");
                     else
                     {
                         JArray to = (JArray)_params[0];
@@ -574,8 +588,8 @@ namespace Bhp.Network.RPC
                         return GetRelayResult(reason);
                     }
                 case "sendtoaddress":
-                    if (wallet == null)
-                        throw new RpcException(-400, "Access denied");
+                    if (wallet == null || walletTimeLock.IsLocked())
+                        throw new RpcException(-400, "wallet is null or locked.");
                     else
                     {
                         UIntBase assetId = UIntBase.Parse(_params[0].AsString());
@@ -637,15 +651,15 @@ namespace Bhp.Network.RPC
                         json["isvalid"] = scriptHash != null;
                         return json;
                     }
-
+                /*
                 case "backupwallet":
-                    if (wallet == null)
-                        throw new RpcException(-400, "Access denied");
+                    if (wallet == null || walletTimeLock.IsLocked())
+                        throw new RpcException(-400, "wallet is null or locked.");
                     else
                     {
                         return BackupWallet();
                     }
-                /*
+                
                 case "backupwallettosqlite":
                     if (wallet == null)
                         throw new RpcException(-400, "Access denied");
@@ -712,8 +726,7 @@ namespace Bhp.Network.RPC
                         if (wallet is BRC6Wallet walletBrc6)
                             walletBrc6.Save();
                         return "Recover Wallet Success";
-                    }
-                    */
+                    } 
 
                 case "closewallet":
                     if (wallet == null)
@@ -727,7 +740,7 @@ namespace Bhp.Network.RPC
                         }
                         return "Close Wallet Success";
                     }
-                    
+                */
                 default:
                     throw new RpcException(-32601, "Method not found");
             }
