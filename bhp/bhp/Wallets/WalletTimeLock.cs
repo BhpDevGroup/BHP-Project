@@ -4,20 +4,23 @@ namespace Bhp.Network.RPC
 {
     public class WalletTimeLock
     {
-        private int Duration = 1; // minutes 
+        private int Duration = 0; // minutes 
         private DateTime UnLockTime;
-        private string password; 
+        private string Password;
+        private bool IsAutoLock;
 
-        public WalletTimeLock(string password)
+        public WalletTimeLock(string password, bool isAutoLock)
         {
             UnLockTime = DateTime.Now;
             Duration = 0;
-            this.password = password;
+            Password = password;
+            IsAutoLock = isAutoLock;
         }
 
-        public void SetPassword(string password)
+        public void SetPassword(string password, bool isAutoLock)
         {
-            this.password = password;
+            Password = password;
+            IsAutoLock = isAutoLock;
         }
 
         /// <summary>
@@ -28,7 +31,7 @@ namespace Bhp.Network.RPC
         {
             lock (this)
             {
-                if (this.password.Length > 0 && this.password.Equals(password))
+                if (Password.Length > 0 && Password.Equals(password))
                 {
                     Duration = duration > 1 ? duration : 1;
                     UnLockTime = DateTime.Now;
@@ -43,8 +46,13 @@ namespace Bhp.Network.RPC
 
         public bool IsLocked()
         {
-            lock (this)
+            if (IsAutoLock == false)
             {
+                return false;
+            }
+
+            lock (this)
+            {                
                 TimeSpan span = new TimeSpan(DateTime.Now.Ticks) - new TimeSpan(UnLockTime.Ticks);
                 return ((int)span.TotalMinutes >= Duration);
             }

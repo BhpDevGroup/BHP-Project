@@ -38,13 +38,13 @@ namespace Bhp.Network.RPC
         private IWebHost host;
         private Fixed8 maxGasInvoke;
 
-        public RpcServer(BhpSystem system, Wallet wallet = null,string password = null, Fixed8 maxGasInvoke = default(Fixed8))
+        public RpcServer(BhpSystem system, Wallet wallet = null,string password = null, bool isAutoLock=false, Fixed8 maxGasInvoke = default(Fixed8))
         {
             this.system = system;
             this.wallet = wallet;
             this.maxGasInvoke = maxGasInvoke;
 
-            walletTimeLock = new WalletTimeLock(password);
+            walletTimeLock = new WalletTimeLock(password, isAutoLock);
         }
 
         private static JObject CreateErrorResponse(JObject id, int code, string message, JObject data = null)
@@ -75,14 +75,14 @@ namespace Bhp.Network.RPC
             }
         }
 
-        public void SetWallet(Wallet wallet, string password)
+        public void SetWallet(Wallet wallet, string password, bool isAutoLock)
         {
             if (this.wallet != null)
             {
                 this.wallet.Dispose();
             }
             this.wallet = wallet;
-            this.walletTimeLock.SetPassword(password);
+            this.walletTimeLock.SetPassword(password, isAutoLock);
         }
 
         private JObject GetInvokeResult(byte[] script)
@@ -157,9 +157,8 @@ namespace Bhp.Network.RPC
                     int duration = (int)_params[1].AsNumber();
                     bool ok = walletTimeLock.UnLock(password, duration);
                     string result = ok ? "success" : "failure";
-                    return $"wallet unlock {result}";
-
-                /*
+                    return $"wallet unlock {result} ."; 
+                
                 case "dumpprivkey":
                     if (wallet == null)
                         throw new RpcException(-400, "Access denied");
@@ -169,7 +168,7 @@ namespace Bhp.Network.RPC
                         WalletAccount account = wallet.GetAccount(scriptHash);
                         return account.GetKey().Export();
                     }
-                    */
+                    
                 case "getaccountstate":
                     {
                         UInt160 script_hash = _params[0].AsString().ToScriptHash();
