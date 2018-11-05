@@ -150,14 +150,15 @@ namespace Bhp.Network.RPC
             switch (method)
             { 
                 case "unlock":
-                    if (wallet == null)return "wallet is null.";
+                    if (wallet == null) return "wallet is null.";
 
-                    if (_params.Count < 2) return "parameter is error.";
+                    if (_params.Count < 2) return "parameter is error.";  
                     string password = _params[0].AsString();
                     int duration = (int)_params[1].AsNumber();
+
                     bool ok = walletTimeLock.UnLock(password, duration);
-                    string result = ok ? "success" : "failure";
-                    return $"wallet unlock {result} ."; 
+                    string result = ok ? "successfully" : "failed";
+                    return $"Wallet unlocked  {result}."; 
                 
                 case "dumpprivkey":
                     if (wallet == null)

@@ -18,7 +18,8 @@
       "Path": "",
       "Password": "",
       "StartConsensus": false,
-      "IsActive": false
+      "IsActive": false,
+      "AutoLock": false
     }
   }
 }
