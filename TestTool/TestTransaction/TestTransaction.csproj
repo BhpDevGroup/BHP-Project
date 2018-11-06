@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\bhp-vm\src\bhp-vm\bhp-vm.csproj" />
-    <ProjectReference Include="..\bhp\bhp\bhp.csproj" />
+    <ProjectReference Include="..\..\bhp-vm\src\bhp-vm\bhp-vm.csproj" />
+    <ProjectReference Include="..\..\bhp\bhp\bhp.csproj" />
   </ItemGroup>
 
   <ItemGroup>
