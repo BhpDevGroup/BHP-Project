@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Bhp.Mining
 {
     public class MiningParams
@@ -11,5 +8,10 @@ namespace Bhp.Mining
         public static readonly string PoSAddressOfTestNet = "AbUAKqt8crJQnhDJWQtFGHT7Pgv9ABnQE6";
 
         public static string[] PoSAddress = { PoSAddressOfMainNet };
+
+        // ServiceChargeAddress
+        public static readonly string ServiceChargeAddressOfMainNet = "AJ1r2aBCMYDr2xmvff2KZb43z7bHnDdHKT";
+        public static readonly string ServiceChargeAddressOfTestNet = "AbUAKqt8crJQnhDJWQtFGHT7Pgv9ABnQE6";
+
     }
 }
