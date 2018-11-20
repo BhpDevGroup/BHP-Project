@@ -19,7 +19,7 @@ namespace Bhp.UI
         }
         
         string path = string.Empty;
-        string password = "123456";
+        string password = "1";
 
         private WalletIndexer indexer = null;
         private WalletIndexer GetIndexer()

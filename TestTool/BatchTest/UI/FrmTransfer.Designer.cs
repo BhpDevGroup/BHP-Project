@@ -36,7 +36,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.lbl_from = new System.Windows.Forms.Label();
             this.lbl_to = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -53,6 +52,7 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.lbl_password = new System.Windows.Forms.Label();
             this.txt_password = new System.Windows.Forms.TextBox();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -131,16 +131,13 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 572);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1016, 22);
             this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             // 
             // lbl_from
             // 
@@ -300,7 +297,12 @@
             this.txt_password.Name = "txt_password";
             this.txt_password.Size = new System.Drawing.Size(280, 21);
             this.txt_password.TabIndex = 12;
-            this.txt_password.Text = "123456";
+            this.txt_password.Text = "1";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             // 
             // FrmTransfer
             // 
@@ -343,7 +345,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.Label lbl_from;
         private System.Windows.Forms.Label lbl_to;
         private System.Windows.Forms.TextBox textBox2;
@@ -360,5 +361,6 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label lbl_password;
         private System.Windows.Forms.TextBox txt_password;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
     }
 }

@@ -42,9 +42,18 @@ namespace Bhp.UI
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (isTransfer) return;
-            isTransfer = true;
-            Transfer();
-            isTransfer = false;
+            try
+            {
+                isTransfer = true;
+                Transfer();
+            }
+            catch
+            {
+            }
+            finally
+            {
+                isTransfer = false;
+            }
         }
 
         /// <summary>
@@ -169,9 +178,9 @@ namespace Bhp.UI
         private void Transfer()
         {
             WriteLog("----------transfer start----------");
+            toolStripProgressBar1.Value = 0;
             if (fromWallets.Count == 0 || toAddressList.Count == 0)
             {
-                toolStripProgressBar1.Value = 0;
                 return;
             }
             int len = fromWallets.Count;
@@ -223,6 +232,7 @@ namespace Bhp.UI
                 WriteLog($"success {i} from:{fromStr} account:{val} trans_id:{tx.Hash}");
                 System.Threading.Thread.Sleep(50);
             }
+            toolStripProgressBar1.Value = 100;        
             WriteLog("----------transfer end----------");
         }
 
@@ -319,26 +329,31 @@ namespace Bhp.UI
 
         private void btn_one_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog dialog = new OpenFileDialog())
+            try
             {
-                if (dialog.ShowDialog() == DialogResult.OK)
+                using (OpenFileDialog dialog = new OpenFileDialog())
                 {
-                    string name = dialog.FileName.Substring(dialog.FileName.LastIndexOf("\\") + 1);
-                    BRC6Wallet wallet = new BRC6Wallet(new WalletIndexer(name), dialog.FileName);
-                    wallet.Unlock(txt_password.Text.Trim());
-                    UInt160 script_hash = wallet.GetAccounts().ToArray()[0].Address.ToScriptHash();
-                    AccountState account = Blockchain.Singleton.Store.GetAccounts().TryGet(script_hash) ?? new AccountState(script_hash);
-                    string value = "0";
-                    if (account.Balances.Count > 0)
+                    if (dialog.ShowDialog() == DialogResult.OK)
                     {
-                        value = account.Balances.Values.ToArray()[0].ToString();
+                        string name = dialog.FileName.Substring(dialog.FileName.LastIndexOf("\\") + 1);
+                        BRC6Wallet wallet = new BRC6Wallet(new WalletIndexer(name), dialog.FileName);
+                        wallet.Unlock(txt_password.Text.Trim());
+                        UInt160 script_hash = wallet.GetAccounts().ToArray()[0].Address.ToScriptHash();
+                        AccountState account = Blockchain.Singleton.Store.GetAccounts().TryGet(script_hash) ?? new AccountState(script_hash);
+                        string value = "0";
+                        if (account.Balances.Count > 0)
+                        {
+                            value = account.Balances.Values.ToArray()[0].ToString();
+                        }
+                        clearWallets();
+                        txt_one.Text = dialog.FileName;
+                        listBox1.Items.Add($"{dialog.FileName}--{value}");
+                        fromWallets.Add(wallet);
                     }
-                    clearWallets();
-                    txt_one.Text = dialog.FileName;
-                    listBox1.Items.Add($"{dialog.FileName}--{value}");
-                    fromWallets.Add(wallet);
                 }
             }
+            catch
+            { }
         }
 
         private void btn_many_Click(object sender, EventArgs e)
@@ -352,12 +367,11 @@ namespace Bhp.UI
         private void SendMany()
         {
             WriteLog("----------send many start----------");
+            toolStripProgressBar1.Value = 0;
             if (fromWallets.Count == 0 || toAddressList.Count == 0)
             {
-                toolStripProgressBar1.Value = 0;
                 return;
             }                     
-            double step = (double)100 / toAddressList.Count;
 
             AssetDescriptor descriptor = new AssetDescriptor(assetId);
             string fromStr = fromWallets[0].GetAccounts().ToArray()[0].Address;
@@ -391,7 +405,8 @@ namespace Bhp.UI
                 tx.Witnesses = context.GetWitnesses();
                 fromWallets[0].ApplyTransaction(tx);
                 Program.BhpSystem.LocalNode.Tell(new LocalNode.Relay { Inventory = tx });
-            }                                    
+            }
+            toolStripProgressBar1.Value = 100;
             WriteLog("----------send many end----------");
         }
     }//end of class
